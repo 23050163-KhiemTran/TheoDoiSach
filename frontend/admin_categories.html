@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quản lý Thể loại</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+
+  <body class="bg-light">
+    <div class="container py-4">
+      <h2 class="mb-4"><i class="fa-solid fa-tags"></i> Quản lý Thể loại</h2>
+
+      <!-- Form thêm thể loại -->
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+          <i class="fa-solid fa-plus"></i> Thêm thể loại mới
+        </div>
+
+        <div class="card-body">
+          <form id="addCategoryForm">
+            <div class="row">
+              <div class="col-md-6">
+                <label>Tên thể loại</label>
+                <input
+                  type="text"
+                  id="categoryName"
+                  class="form-control"
+                  required
+                />
+              </div>
+
+              <div class="col-md-6 d-flex align-items-end">
+                <button class="btn btn-success w-100">
+                  <i class="fa-solid fa-check"></i> Thêm mới
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Danh sách thể loại -->
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <i class="fa-solid fa-list"></i> Danh sách thể loại
+        </div>
+
+        <div class="card-body">
+          <table class="table table-bordered table-hover text-center">
+            <thead class="table-secondary">
+              <tr>
+                <th>#</th>
+                <th>Tên thể loại</th>
+                <th>Ngày tạo</th>
+                <th>Hành động</th>
+              </tr>
+            </thead>
+
+            <tbody id="categoryTable">
+              <!-- JS sẽ render -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal sửa -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-warning">
+            <h5 class="modal-title">
+              <i class="fa-solid fa-pen-to-square"></i> Sửa thể loại
+            </h5>
+            <button class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body">
+            <form id="editCategoryForm">
+              <input type="hidden" id="editCategoryId" />
+
+              <label>Tên thể loại</label>
+              <input
+                type="text"
+                id="editCategoryName"
+                class="form-control"
+                required
+              />
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">
+              Hủy
+            </button>
+            <button class="btn btn-primary" onclick="saveEdit()">
+              <i class="fa-solid fa-save"></i> Lưu
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const API = "http://localhost:8000/categories";
+      const token = localStorage.getItem("token"); // Admin token
+
+      // Tải danh sách thể loại
+      async function loadCategories() {
+        const res = await fetch(API, {
+          headers: { Authorization: "Bearer " + token },
+        });
+        const data = await res.json();
+
+        const table = document.getElementById("categoryTable");
+        table.innerHTML = "";
+
+        data.forEach((c, i) => {
+          table.innerHTML += `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${c.ten}</td>
+                        <td>${new Date(c.ngay_tao).toLocaleString()}</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm" onclick="openEdit(${
+                              c.id
+                            }, '${c.ten}')">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+
+                            <button class="btn btn-danger btn-sm" onclick="deleteCategory(${
+                              c.id
+                            })">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+        });
+      }
+
+      // Thêm thể loại
+      document
+        .getElementById("addCategoryForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const name = document.getElementById("categoryName").value;
+
+          await fetch(API, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            body: JSON.stringify({ ten: name }),
+          });
+
+          document.getElementById("categoryName").value = "";
+          loadCategories();
+        });
+
+      // Mở modal sửa
+      function openEdit(id, name) {
+        document.getElementById("editCategoryId").value = id;
+        document.getElementById("editCategoryName").value = name;
+
+        new bootstrap.Modal(document.getElementById("editModal")).show();
+      }
+
+      // Lưu sửa
+      async function saveEdit() {
+        const id = document.getElementById("editCategoryId").value;
+        const name = document.getElementById("editCategoryName").value;
+
+        await fetch(API + "/" + id, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({ ten: name }),
+        });
+
+        loadCategories();
+        bootstrap.Modal.getInstance(
+          document.getElementById("editModal")
+        ).hide();
+      }
+
+      // Xóa thể loại
+      async function deleteCategory(id) {
+        if (!confirm("Bạn có chắc muốn xóa thể loại này?")) return;
+
+        await fetch(API + "/" + id, {
+          method: "DELETE",
+          headers: { Authorization: "Bearer " + token },
+        });
+
+        loadCategories();
+      }
+
+      loadCategories();
+    </script>
+  </body>
+</html>

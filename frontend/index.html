@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trang Chủ - Book Club</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body class="bg-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <i class="fa-solid fa-book"></i> Book Club
+        </a>
+
+        <button class="btn btn-outline-light" onclick="logout()">
+          <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+        </button>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <h3 class="text-center mb-4">
+        <i class="fa-solid fa-list"></i> Danh sách sách
+      </h3>
+
+      <!-- Search + Filter -->
+      <div class="row mb-4">
+        <div class="col-md-8">
+          <input
+            id="searchInput"
+            type="text"
+            class="form-control"
+            placeholder="Tìm sách theo tên..."
+          />
+        </div>
+
+        <div class="col-md-4">
+          <select id="categoryFilter" class="form-select">
+            <option value="">-- Tất cả thể loại --</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Book List -->
+      <div id="book-list" class="row g-4">
+        <!-- Render bằng JS -->
+      </div>
+    </div>
+
+    <script src="home.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

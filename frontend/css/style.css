@@ -1,0 +1,17 @@
+body {
+  background: #f8f9fa;
+}
+
+.auth-container {
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 35px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+  height: 220px;
+  object-fit: cover;
+}
