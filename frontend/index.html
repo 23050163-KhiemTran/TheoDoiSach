@@ -25,9 +25,23 @@
           <i class="fa-solid fa-book"></i> Book Club
         </a>
 
-        <button class="btn btn-outline-light" onclick="logout()">
-          <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
-        </button>
+        <div class="hstack gap-2">
+          <button
+            class="btn btn-outline-light"
+            title="Sách yêu thích"
+            onclick="window.location.href='favorites.html'"
+          >
+            <i class="fa-solid fa-heart"></i>
+          </button>
+
+          <button
+            title="Đăng xuất"
+            class="btn btn-outline-light"
+            onclick="logout()"
+          >
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </button>
+        </div>
       </div>
     </nav>
 

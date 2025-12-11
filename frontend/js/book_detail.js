@@ -98,35 +98,53 @@ async function loadBookDetail() {
 
   <div class="col-md-8 d-flex flex-column justify-content-between">
     <div>
-      <h2 class="fw-bold">${bookData.tieu_de}</h2>
-      <p class="text-muted mb-1"><i class="fa-solid fa-user me-2"></i><strong>Tác giả: </strong>${
+      <h2 class="fw-semibold text-capitalize">${bookData.tieu_de}</h2>
+
+      <hr/>
+
+      <p class="text-muted mb-1 text-capitalize"><i class="fa-solid fa-user me-2"></i><strong>Tác giả: </strong>${
         bookData.tac_gia
       }</p>
-      <p class="text-muted mb-3"><i class="fa-solid fa-bookmark me-2"></i><strong>Thể loại: </strong>${
+
+      <hr/>
+
+      <p class="text-muted mb-3 text-capitalize"><i class="fa-solid fa-bookmark me-2"></i><strong>Thể loại: </strong>${
         bookData.the_loai?.ten_the_loai || "Chưa có"
       }</p>
+
+      <hr/>
 
       <div class="mb-3">
         <h5 class="mb-1">Điểm trung bình</h5>
         <div>${stars} <small class="text-muted">(${reviewCount} đánh giá)</small></div>
       </div>
 
+      <hr/>
+
       <div class="mb-3">
         <h5>Mô tả</h5>
-        <p>${bookData.mo_ta || "Không có mô tả."}</p>
+        <p class="text-muted">${bookData.mo_ta || "Không có mô tả."}</p>
       </div>
 
+      <hr/>
+
       <div class="d-flex align-items-center gap-2">
-        <div class="flex-grow-1">
+        <div class="flex-grow-1" title="${
+          progressPercent > 0
+            ? `${soTrangDaDoc} / ${tongSoTrang} trang (${progressPercent}%)`
+            : ""
+        }">
           <div class="progress" style="height: 25px;">
             <div class="progress-bar bg-success d-flex align-items-center justify-content-center" 
                  role="progressbar" 
                  style="width: ${progressPercent}%; min-width:0;">
-              ${
-                progressPercent > 0
-                  ? `${soTrangDaDoc} / ${tongSoTrang} trang (${progressPercent}%)`
-                  : ""
-              }
+              <strong class="mx-auto text-white">
+                ${
+                  progressPercent > 0
+                    ? `${soTrangDaDoc} / ${tongSoTrang} trang (${progressPercent}%)`
+                    : ""
+                }
+              </strong>
             </div>
           </div>
         </div>

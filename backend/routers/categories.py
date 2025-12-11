@@ -37,7 +37,7 @@ def lay_the_loai_theo_id(id: int, db: Session = Depends(get_db)):
 
 
 # ----------------- Tạo thể loại mới (ADMIN) -------------------------
-@router.post("/getId", response_model=TheLoaiResponse)
+@router.post("/add", response_model=TheLoaiResponse)
 def tao_the_loai(
     body: TheLoaiCreate,
     db: Session = Depends(get_db),
@@ -58,7 +58,7 @@ def tao_the_loai(
 
 
 # ----------------- Cập nhật thể loại (ADMIN) ------------------------
-@router.put("/{id}", response_model=TheLoaiResponse)
+@router.put("/save/{id}", response_model=TheLoaiResponse)
 def cap_nhat_the_loai(
     id: int,
     body: TheLoaiCreate,
@@ -87,7 +87,7 @@ def cap_nhat_the_loai(
 
 
 # ----------------- Xoá thể loại (ADMIN) -----------------------------
-@router.delete("/{id}")
+@router.delete("/delete/{id}")
 def xoa_the_loai(
     id: int,
     db: Session = Depends(get_db),

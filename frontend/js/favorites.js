@@ -17,7 +17,7 @@ if (!token) {
 async function loadFavorites() {
   const container = document.getElementById("favoriteList");
 
-  const res = await fetch(`${API}/favorites`, {
+  const res = await fetch(`${API}/yeu_thich/me`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -40,18 +40,18 @@ async function loadFavorites() {
                 <img src="${item.anh_bia || "https://via.placeholder.com/300"}" 
                      class="card-img-top" 
                      style="height: 260px; object-fit: cover; cursor:pointer"
-                     onclick="goToDetail(${item.sach_id})">
+                     onclick="goToDetail(${item.id})">
 
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title" style="cursor:pointer" onclick="goToDetail(${
-                      item.sach_id
+                      item.id
                     })">
-                        ${item.ten_sach}
+                        ${item.tieu_de}
                     </h5>
                     <p class="card-text text-muted">Tác giả: ${item.tac_gia}</p>
 
                     <button class="btn btn-danger mt-auto" onclick="removeFavorite(${
-                      item.sach_id
+                      item.id
                     })">
                         <i class="fa-solid fa-trash"></i> Xóa khỏi yêu thích
                     </button>
@@ -69,7 +69,7 @@ loadFavorites();
 async function removeFavorite(bookId) {
   if (!confirm("Bạn muốn xóa khỏi danh sách yêu thích?")) return;
 
-  const res = await fetch(`${API}/favorites/${bookId}`, {
+  const res = await fetch(`${API}/yeu_thich/remove/${bookId}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${token}` },
   });

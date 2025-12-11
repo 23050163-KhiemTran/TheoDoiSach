@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from database import get_db
-from models import YeuThich, NguoiDung
+from models import Sach, YeuThich, NguoiDung
 from schemas import YeuThichCreate, YeuThichResponse
 from routers.auth import get_current_user
 
@@ -28,13 +28,19 @@ def lay_danh_sach_yeu_thich(
 
 
 # ------------------- Lấy sách yêu thích của chính người dùng -------------------
-@router.get("/me", response_model=List[YeuThichResponse])
-def lay_yeu_thich_cua_toi(
-    db: Session = Depends(get_db),
-    current_user: NguoiDung = Depends(get_current_user)
-):
-    return db.query(YeuThich).filter(YeuThich.id_nguoi_dung == current_user.id).all()
-
+@router.get("/me")
+def get_my_favorites(db: Session = Depends(get_db), current_user: NguoiDung = Depends(get_current_user)):
+    favs = db.query(YeuThich).filter(YeuThich.id_nguoi_dung == current_user.id).all()
+    result = []
+    for f in favs:
+        book = db.query(Sach).filter(Sach.id == f.id_sach).first()
+        result.append({
+            "id": book.id,
+            "tieu_de": book.tieu_de,
+            "tac_gia": book.tac_gia,
+            "anh_bia": book.anh_bia
+        })
+    return result
 
 # ------------------- Lấy sách yêu thích của 1 user (ADMIN) -------------------
 @router.get("/nguoi_dung/{user_id}", response_model=List[YeuThichResponse])
