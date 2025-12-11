@@ -14,30 +14,82 @@
     />
   </head>
 
-  <body class="bg-light">
-    <div class="container py-4">
+  <body class="bg-dark text-white">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+      <div class="container">
+        <a class="navbar-brand fw-semibold" href="index.html">
+          <i class="fa-solid fa-dragon"></i> Dragon's Reading Tracker
+        </a>
+
+        <div class="hstack gap-2">
+          <button
+            class="btn btn-outline-light text-capitalize"
+            title="Quản lý người dùng"
+            onclick="window.location.href='admin_users.html'"
+          >
+            <i class="fa-solid fa-users"></i> Quản lý người dùng
+          </button>
+
+          <button
+            class="btn btn-outline-light text-capitalize"
+            title="Quản lý sách"
+            onclick="window.location.href='admin_books.html'"
+          >
+            <i class="fa-solid fa-book"></i> Quản lý sách
+          </button>
+
+          <button
+            class="btn btn-outline-light text-capitalize"
+            title="Quản lý danh mục"
+            onclick="window.location.href='admin_categories.html'"
+          >
+            <i class="fa-solid fa-layer-group"></i> Quản lý danh mục
+          </button>
+
+          <button
+            class="btn btn-outline-light"
+            title="Tài khoản"
+            onclick="window.location.href='change_password.html'"
+          >
+            <i class="fa-solid fa-user"></i>
+          </button>
+
+          <button
+            title="Đăng xuất"
+            class="btn btn-outline-light"
+            onclick="logout()"
+          >
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container py-4 mt-4">
       <h2 class="mb-4"><i class="fa-solid fa-tags"></i> Quản lý Thể loại</h2>
 
       <!-- Form thêm thể loại -->
       <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
+        <div class="card-header bg-primary text-white fw-semibold">
           <i class="fa-solid fa-plus"></i> Thêm thể loại mới
         </div>
 
-        <div class="card-body">
+        <div class="card-body bg-dark">
           <form id="addCategoryForm">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-9">
                 <label>Tên thể loại</label>
                 <input
                   type="text"
                   id="categoryName"
                   class="form-control"
+                  placeholder="Nhập tên danh mục..."
                   required
                 />
               </div>
 
-              <div class="col-md-6 d-flex align-items-end">
+              <div class="col-md-3 d-flex align-items-end">
                 <button class="btn btn-success w-100">
                   <i class="fa-solid fa-check"></i> Thêm mới
                 </button>
@@ -48,14 +100,16 @@
       </div>
 
       <!-- Danh sách thể loại -->
-      <div class="card">
-        <div class="card-header bg-dark text-white">
+      <div class="card mt-5">
+        <div class="card-header bg-danger fw-semibold text-white">
           <i class="fa-solid fa-list"></i> Danh sách thể loại
         </div>
 
-        <div class="card-body">
-          <table class="table table-bordered table-hover text-center">
-            <thead class="table-secondary">
+        <div class="card-body bg-dark">
+          <table
+            class="table table-bordered table-dark table-hover text-center"
+          >
+            <thead class="table-light">
               <tr>
                 <th>#</th>
                 <th>Tên thể loại</th>
@@ -129,7 +183,7 @@
                     <tr>
                         <td>${i + 1}</td>
                         <td>${c.ten_the_loai}</td>
-                        <td>
+                        <td class="hstack justify-content-center align-items-center gap-2">
                             <button class="btn btn-warning btn-sm" onclick="openEdit(${
                               c.id
                             }, '${c.ten_the_loai}')">
@@ -209,6 +263,12 @@
       }
 
       loadCategories();
+
+      // -------------------- LOGOUT --------------------
+      function logout() {
+        localStorage.removeItem("token");
+        window.location.href = "login.html";
+      }
     </script>
   </body>
 </html>
