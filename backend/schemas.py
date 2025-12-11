@@ -18,6 +18,11 @@ class NguoiDungResponse(NguoiDungBase):
 
     model_config = {"from_attributes": True}
 
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
+
+
 # ------------------- THỂ LOẠI -------------------
 class TheLoaiBase(BaseModel):
     ten_the_loai: str = Field(..., min_length=1)

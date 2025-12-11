@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trang Chủ - Book Club</title>
-
+    <link href="css/style.css" rel="stylesheet" />
     <!-- Bootstrap -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -17,21 +17,37 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
   </head>
-  <body class="bg-light">
+  <body class="bg-dark text-white">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
       <div class="container">
-        <a class="navbar-brand" href="#">
-          <i class="fa-solid fa-book"></i> Book Club
+        <a class="navbar-brand fw-semibold" href="index.html">
+          <i class="fa-solid fa-dragon"></i> Dragon's Reading Tracker
         </a>
 
         <div class="hstack gap-2">
+          <button
+            class="btn btn-outline-light"
+            title="Trang chủ"
+            onclick="window.location.href='index.html'"
+          >
+            <i class="fa-solid fa-home"></i>
+          </button>
+
           <button
             class="btn btn-outline-light"
             title="Sách yêu thích"
             onclick="window.location.href='favorites.html'"
           >
             <i class="fa-solid fa-heart"></i>
+          </button>
+
+          <button
+            class="btn btn-outline-light"
+            title="Tài khoản"
+            onclick="window.location.href='change_password.html'"
+          >
+            <i class="fa-solid fa-user"></i>
           </button>
 
           <button
@@ -46,23 +62,23 @@
     </nav>
 
     <div class="container mt-4">
-      <h3 class="text-center mb-4">
+      <h3 class="text-center mb-4 text-white">
         <i class="fa-solid fa-list"></i> Danh sách sách
       </h3>
 
       <!-- Search + Filter -->
       <div class="row mb-4">
-        <div class="col-md-8">
+        <div class="col-md-9">
           <input
             id="searchInput"
             type="text"
-            class="form-control"
+            class="form-control bg-light text-dark"
             placeholder="Tìm sách theo tên..."
           />
         </div>
 
-        <div class="col-md-4">
-          <select id="categoryFilter" class="form-select">
+        <div class="col-md-3">
+          <select id="categoryFilter" class="form-select bg-dark text-white">
             <option value="">-- Tất cả thể loại --</option>
           </select>
         </div>
@@ -75,8 +91,6 @@
     </div>
 
     <script src="js/home.js"></script>
-
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

@@ -34,7 +34,7 @@ async function loadBookDetail() {
     headers: { Authorization: `Bearer ${token}` },
   });
   const favList = await resFav.json();
-  isFavorite = favList.some((f) => Number(f.id_sach) === Number(bookId));
+  isFavorite = favList.some((f) => Number(f.id) === Number(bookId));
 
   // Điểm trung bình
   const resScore = await fetch(`${API}/danh_gia/sach/${bookId}/trung_binh`);
@@ -72,10 +72,10 @@ async function loadBookDetail() {
   container.innerHTML = `
 <div class="row g-4">
   <div class="col-md-4 position-relative">
-    <div class="card shadow-sm">
+    <div class="card shadow-sm border-0">
       <img src="${
         bookData.anh_bia || "https://via.placeholder.com/300"
-      }" class="card-img-top" style="height:420px; object-fit:cover;">
+      }" class="card-img-top" style="height:500px; object-fit:cover;">
       
       <!-- Nút yêu thích / hủy yêu thích -->
       <button id="favoriteBtn" class="btn ${
@@ -102,13 +102,13 @@ async function loadBookDetail() {
 
       <hr/>
 
-      <p class="text-muted mb-1 text-capitalize"><i class="fa-solid fa-user me-2"></i><strong>Tác giả: </strong>${
+      <p class="text-white mb-1 text-capitalize"><strong>Tác giả: </strong>${
         bookData.tac_gia
       }</p>
 
       <hr/>
 
-      <p class="text-muted mb-3 text-capitalize"><i class="fa-solid fa-bookmark me-2"></i><strong>Thể loại: </strong>${
+      <p class="text-white mb-3 text-capitalize"><strong>Thể loại: </strong>${
         bookData.the_loai?.ten_the_loai || "Chưa có"
       }</p>
 
@@ -116,29 +116,30 @@ async function loadBookDetail() {
 
       <div class="mb-3">
         <h5 class="mb-1">Điểm trung bình</h5>
-        <div>${stars} <small class="text-muted">(${reviewCount} đánh giá)</small></div>
+        <div>${stars} <small class="text-secondary">(${reviewCount} đánh giá)</small></div>
       </div>
 
       <hr/>
 
       <div class="mb-3">
         <h5>Mô tả</h5>
-        <p class="text-muted">${bookData.mo_ta || "Không có mô tả."}</p>
+        <p class="text-white">${bookData.mo_ta || "Không có mô tả."}</p>
       </div>
 
       <hr/>
 
+      <h5>Tiến độ</h5>
       <div class="d-flex align-items-center gap-2">
         <div class="flex-grow-1" title="${
           progressPercent > 0
             ? `${soTrangDaDoc} / ${tongSoTrang} trang (${progressPercent}%)`
             : ""
         }">
-          <div class="progress" style="height: 25px;">
-            <div class="progress-bar bg-success d-flex align-items-center justify-content-center" 
+          <div class="progress bg-dark border" style="height: 25px;">
+            <div class="progress-bar bg-info d-flex align-items-center justify-content-center" 
                  role="progressbar" 
                  style="width: ${progressPercent}%; min-width:0;">
-              <strong class="mx-auto text-white">
+              <strong class="mx-auto text-light">
                 ${
                   progressPercent > 0
                     ? `${soTrangDaDoc} / ${tongSoTrang} trang (${progressPercent}%)`
@@ -150,8 +151,8 @@ async function loadBookDetail() {
         </div>
 
         <div class="input-group" style="width: 150px;">
-          <input type="number" id="pagesReadInput" class="form-control" min="0" max="${tongSoTrang}" placeholder="Trang">
-          <button class="btn btn-success" id="updateProgressBtn"><i class="fa-solid fa-sync"></i></button>
+          <input type="number" id="pagesReadInput" class="form-control bg-dark text-white" min="0" max="${tongSoTrang}" value="${soTrangDaDoc}" placeholder="Trang">
+          <button class="btn btn-info text-white" id="updateProgressBtn"><i class="fa-solid fa-sync"></i></button>
         </div>
       </div>
     </div>
@@ -288,17 +289,17 @@ async function loadReviews() {
   list.innerHTML = reviews
     .map(
       (r) => `
-        <div class="card mb-3 shadow-sm">
-          <div class="card-body">
+        <div class="card mb-3 shadow-sm border-0">
+          <div class="card-body bg-dark border border-info rounded-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6 class="mb-0 fw-bold text-secondary"><i class="fa-solid fa-user text-secondary me-2"></i>${
+              <h6 class="mb-0 fw-bold text-light"><i class="fa-solid fa-user text-light me-2"></i>${
                 r.ten_dang_nhap
               }</h6>
-              <small class="text-muted">${new Date(
+              <small class="text-light">${new Date(
                 r.ngay_tao
               ).toLocaleDateString()}</small>
             </div>
-            <div class="mb-2 ms-4">
+            <div class="mb-2 ms-4 text-light">
             <strong>Đánh giá:</strong>
               ${Array.from(
                 { length: r.diem },
@@ -309,7 +310,7 @@ async function loadReviews() {
                 () => `<i class="fa-regular fa-star text-warning"></i>`
               ).join("")}
             </div>
-            <p class="mb-0 ms-4"><strong>Nội dung:</strong> ${
+            <p class="mb-0 ms-4 text-light"><strong>Nội dung:</strong> ${
               r.binh_luan || ""
             }</p>
           </div>

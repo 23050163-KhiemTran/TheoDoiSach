@@ -36,19 +36,21 @@ async function loadFavorites() {
     .map(
       (item) => `
         <div class="col-md-3">
-            <div class="card shadow-sm h-100">
+            <div class="card shadow-sm h-100 border-0 rounded-3">
                 <img src="${item.anh_bia || "https://via.placeholder.com/300"}" 
                      class="card-img-top" 
                      style="height: 260px; object-fit: cover; cursor:pointer"
                      onclick="goToDetail(${item.id})">
 
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title" style="cursor:pointer" onclick="goToDetail(${
+                <div class="card-body bg-secondary d-flex flex-column">
+                    <h5 class="card-title text-white" style="cursor:pointer" onclick="goToDetail(${
                       item.id
                     })">
                         ${item.tieu_de}
                     </h5>
-                    <p class="card-text text-muted">Tác giả: ${item.tac_gia}</p>
+                    <p class="card-text text-white"><strong>Tác giả:</strong> ${
+                      item.tac_gia
+                    }</p>
 
                     <button class="btn btn-danger mt-auto" onclick="removeFavorite(${
                       item.id

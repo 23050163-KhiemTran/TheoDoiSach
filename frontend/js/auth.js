@@ -64,7 +64,23 @@ if (loginForm) {
     const result = await res.json();
     localStorage.setItem("token", result.access_token);
 
+    // ==== LẤY THÔNG TIN USER ====
+    const userRes = await fetch(`${API}/auth/me`, {
+      headers: {
+        Authorization: `Bearer ${result.access_token}`,
+      },
+    });
+
+    const user = await userRes.json();
+
     showAlert("Đăng nhập thành công!", "success");
-    setTimeout(() => (window.location.href = "index.html"), 800);
+
+    setTimeout(() => {
+      if (user.vai_tro === "admin") {
+        window.location.href = "admin_books.html";
+      } else {
+        window.location.href = "index.html";
+      }
+    }, 800);
   });
 }

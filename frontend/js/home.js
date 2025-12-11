@@ -78,14 +78,14 @@ async function loadBooks() {
               </button>
             </div>
 
-            <div class="card-body">
-              <h5 class="card-title fw-bold text-truncate">${
+            <div class="card-body bg-secondary">
+              <h5 class="card-title fw-bold text-truncate text-white">${
                 book.tieu_de || "Chưa có tiêu đề"
               }</h5>
-              <p class="text-muted mb-1"><i class="fa-solid fa-user me-1"></i> ${
+              <p class="text-white mb-1"><i class="fa-solid fa-user me-1"></i> <strong>Tác giả: </strong>${
                 book.tac_gia || "Không rõ"
               }</p>
-              <p class="text-muted mb-0"><i class="fa-solid fa-bookmark me-1"></i> ${
+              <p class="text-white mb-0"><i class="fa-solid fa-bookmark me-1"></i> <strong>Thể loại: </strong> ${
                 book.the_loai?.ten_the_loai || "Chưa có thể loại"
               }</p>
             </div>

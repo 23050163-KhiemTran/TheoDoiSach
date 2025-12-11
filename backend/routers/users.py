@@ -1,10 +1,10 @@
 # backend/routers/users.py
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from database import get_db
 from models import NguoiDung
-from schemas import NguoiDungCreate, NguoiDungResponse
+from schemas import ChangePasswordRequest, NguoiDungCreate, NguoiDungResponse
 from passlib.context import CryptContext
 from routers.auth import get_current_user
 
@@ -89,3 +89,19 @@ def tao_nguoi_dung(
     db.commit()
     db.refresh(new_user)
     return new_user
+
+# ------------------- Đổi mật khẩu -------------------
+@router.put("/change_password")
+def doi_mat_khau(
+    body: ChangePasswordRequest = Body(...),
+    db: Session = Depends(get_db),
+    current_user: NguoiDung = Depends(get_current_user)
+):
+    # Kiểm tra mật khẩu hiện tại
+    if not pwd_context.verify(body.current_password, current_user.mat_khau_hash):
+        raise HTTPException(status_code=400, detail="Mật khẩu hiện tại không chính xác")
+    
+    # Hash mật khẩu mới
+    current_user.mat_khau_hash = pwd_context.hash(body.new_password)
+    db.commit()
+    return {"detail": "Đổi mật khẩu thành công"}
