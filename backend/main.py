@@ -2,8 +2,24 @@
 from fastapi import FastAPI
 from database import engine, Base
 from routers import books, users, reviews, progress, favorites, clubs, club_members, categories, auth
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Book Club / Reading Tracker")
+
+# Cho phép frontend localhost truy cập
+origins = [
+    "http://localhost:5500",  # ví dụ nếu dùng Live Server
+    "http://127.0.0.1:5500",
+    "http://localhost:3000",  # nếu dùng React hay frontend khác
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,       # danh sách domain được phép
+    allow_credentials=True,
+    allow_methods=["*"],         # GET, POST, PUT, DELETE, OPTIONS...
+    allow_headers=["*"],         # Content-Type, Authorization...
+)
 
 # Tạo bảng lần đầu
 Base.metadata.create_all(bind=engine)

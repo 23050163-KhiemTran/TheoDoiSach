@@ -49,7 +49,7 @@ if (loginForm) {
     data.append("username", document.getElementById("loginUser").value);
     data.append("password", document.getElementById("loginPass").value);
 
-    const res = await fetch(`${API}/auth/login`, {
+    const res = await fetch(`${API}/auth/token`, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: data,

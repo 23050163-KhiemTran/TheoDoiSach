@@ -17,7 +17,7 @@ router = APIRouter(
 
 
 # ----------------- Lấy danh sách thể loại ------------------
-@router.get("/", response_model=List[TheLoaiResponse])
+@router.get("/get", response_model=List[TheLoaiResponse])
 def lay_danh_sach_the_loai(
     skip: int = 0,
     limit: int = 100,
@@ -37,7 +37,7 @@ def lay_the_loai_theo_id(id: int, db: Session = Depends(get_db)):
 
 
 # ----------------- Tạo thể loại mới (ADMIN) -------------------------
-@router.post("/", response_model=TheLoaiResponse)
+@router.post("/getId", response_model=TheLoaiResponse)
 def tao_the_loai(
     body: TheLoaiCreate,
     db: Session = Depends(get_db),

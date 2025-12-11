@@ -54,17 +54,13 @@ def lay_tien_do_cua_toi(
 
 
 # ------------------- Tạo tiến độ mới -------------------
-@router.post("/", response_model=TienDoDocSachResponse)
+@router.post("/add", response_model=TienDoDocSachResponse)
 def tao_tien_do(
     progress: TienDoDocSachCreate,
     db: Session = Depends(get_db),
     current_user: NguoiDung = Depends(get_current_user)
 ):
-
-    # Không cho phép user giả mạo id_nguoi_dung
-    if progress.id_nguoi_dung != current_user.id:
-        raise HTTPException(status_code=403, detail="Bạn không thể tạo tiến độ cho người khác")
-
+    # Tạo tiến độ, backend tự lấy id_nguoi_dung từ token
     new_progress = TienDoDocSach(
         id_sach=progress.id_sach,
         id_nguoi_dung=current_user.id,

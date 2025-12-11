@@ -16,7 +16,7 @@ function logout() {
 // -------------------- LOAD CATEGORY --------------------
 async function loadCategories() {
   try {
-    const res = await fetch(`${API}/categories/`, {
+    const res = await fetch(`${API}/the_loai/get`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 

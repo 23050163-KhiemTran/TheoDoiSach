@@ -50,16 +50,13 @@ def lay_yeu_thich_theo_nguoi_dung(
 
 
 # ------------------- Thêm sách yêu thích -------------------
-@router.post("/", response_model=YeuThichResponse)
+@router.post("/add", response_model=YeuThichResponse)
 def them_sach_yeu_thich(
     fav: YeuThichCreate,
     db: Session = Depends(get_db),
     current_user: NguoiDung = Depends(get_current_user)
 ):
-    # user không được thêm vào danh sách của người khác
-    if fav.id_nguoi_dung != current_user.id:
-        raise HTTPException(status_code=403, detail="Bạn không thể thêm sách vào danh sách của người khác")
-
+    # Kiểm tra xem sách đã tồn tại trong danh sách yêu thích chưa
     exist = db.query(YeuThich).filter(
         YeuThich.id_sach == fav.id_sach,
         YeuThich.id_nguoi_dung == current_user.id
@@ -68,6 +65,7 @@ def them_sach_yeu_thich(
     if exist:
         raise HTTPException(status_code=400, detail="Sách đã có trong danh sách yêu thích")
 
+    # Tạo mới, gán id_nguoi_dung từ token
     new_fav = YeuThich(
         id_sach=fav.id_sach,
         id_nguoi_dung=current_user.id
@@ -77,6 +75,7 @@ def them_sach_yeu_thich(
     db.commit()
     db.refresh(new_fav)
     return new_fav
+
 
 
 # ------------------- Xóa sách yêu thích -------------------

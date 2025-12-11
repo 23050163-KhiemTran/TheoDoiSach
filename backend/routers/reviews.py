@@ -1,6 +1,6 @@
 # backend/routers/reviews.py
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import List
 from database import get_db
 from models import DanhGiaSach, NguoiDung
@@ -27,7 +27,7 @@ def lay_danh_sach_danh_gia(
 
 
 # ------------------- Lấy đánh giá theo id -------------------
-@router.get("/{review_id}", response_model=DanhGiaSachResponse)
+@router.get("/getId/{review_id}", response_model=DanhGiaSachResponse)
 def lay_danh_gia_theo_id(
     review_id: int,
     db: Session = Depends(get_db),
@@ -47,8 +47,28 @@ def lay_danh_gia_theo_id(
 # ------------------- Lấy tất cả review của 1 sách (public) -------------------
 @router.get("/sach/{sach_id}", response_model=List[DanhGiaSachResponse])
 def lay_review_theo_sach(sach_id: int, db: Session = Depends(get_db)):
-    return db.query(DanhGiaSach).filter(DanhGiaSach.id_sach == sach_id).all()
+    reviews = (
+        db.query(DanhGiaSach)
+        .options(joinedload(DanhGiaSach.nguoi_dung))
+        .filter(DanhGiaSach.id_sach == sach_id)
+        .all()
+    )
 
+    # Map tên người dùng cho schema
+    result = []
+    for r in reviews:
+        result.append(
+            DanhGiaSachResponse(
+                id=r.id,
+                id_sach=r.id_sach,
+                id_nguoi_dung=r.id_nguoi_dung,
+                diem=r.diem,
+                binh_luan=r.binh_luan,
+                ngay_tao=r.ngay_tao,
+                ten_dang_nhap=r.nguoi_dung.ten_dang_nhap    
+            )
+        )
+    return result
 
 # ------------------- Lấy review của chính mình -------------------
 @router.get("/me", response_model=List[DanhGiaSachResponse])
@@ -60,20 +80,15 @@ def lay_review_cua_toi(
 
 
 # ------------------- Tạo đánh giá (user chỉ đánh giá cho chính họ) -------------------
-@router.post("/", response_model=DanhGiaSachResponse)
+@router.post("/add", response_model=DanhGiaSachResponse)
 def tao_danh_gia(
     review: DanhGiaSachCreate,
     db: Session = Depends(get_db),
     current_user: NguoiDung = Depends(get_current_user)
 ):
-
-    # Không cho user fake id_nguoi_dung
-    if review.id_nguoi_dung != current_user.id:
-        raise HTTPException(status_code=403, detail="Không thể tạo đánh giá cho người khác")
-
     new_review = DanhGiaSach(
         id_sach=review.id_sach,
-        id_nguoi_dung=current_user.id,
+        id_nguoi_dung=current_user.id,  # lấy trực tiếp từ token
         diem=review.diem,
         binh_luan=review.binh_luan
     )

@@ -39,30 +39,46 @@
 
       <hr class="my-4" />
 
+      <!-- ADD REVIEW -->
+      <h5>Đóng góp ý kiến của bạn</h5>
+      <form id="reviewForm" class="mt-3">
+        <div class="mb-2">
+          <label for="reviewScore" class="form-label">Điểm đánh giá</label>
+          <select id="reviewScore" class="form-select">
+            <option value="0" selected>Cho điểm</option>
+            <option value="1">1 - Kém</option>
+            <option value="2">2 - Trung bình</option>
+            <option value="3">3 - Khá</option>
+            <option value="4">4 - Tốt</option>
+            <option value="5">5 - Xuất sắc</option>
+          </select>
+        </div>
+
+        <div class="mb-2">
+          <label for="reviewText" class="form-label">Nhận xét</label>
+          <textarea
+            id="reviewText"
+            class="form-control"
+            rows="3"
+            placeholder="Nhập đánh giá của bạn..."
+          ></textarea>
+        </div>
+
+        <button class="btn btn-primary mt-2">
+          <i class="fa-solid fa-paper-plane"></i> Gửi đánh giá
+        </button>
+      </form>
+
+      <hr class="my-4" />
+
       <!-- REVIEW LIST -->
       <h4><i class="fa-solid fa-comments"></i> Đánh giá</h4>
       <div id="reviewList" class="mt-3">
         <!-- Render bằng JS -->
       </div>
-
-      <hr class="my-4" />
-
-      <!-- ADD REVIEW -->
-      <h5>Thêm đánh giá</h5>
-      <form id="reviewForm" class="mt-3">
-        <textarea
-          id="reviewText"
-          class="form-control"
-          rows="3"
-          placeholder="Nhập đánh giá của bạn..."
-        ></textarea>
-        <button class="btn btn-primary mt-3">
-          <i class="fa-solid fa-paper-plane"></i> Gửi đánh giá
-        </button>
-      </form>
     </div>
 
-    <script src="book_detail.js"></script>
+    <script src="js/book_detail.js"></script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

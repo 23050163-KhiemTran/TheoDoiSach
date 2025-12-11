@@ -34,6 +34,7 @@ class TheLoaiResponse(TheLoaiBase):
 class SachBase(BaseModel):
     tieu_de: str
     tac_gia: str
+    anh_bia: Optional[str] = "https://lh5.googleusercontent.com/proxy/KsVEvldAU8YY0hdydvLaAc3ijPxFU5SBgDK3JohiyTY8PRyHzF96pqMKGsNbTJA8l1y3S6hObE3v84n_e6SOaokbBzVKr-mnlB_Rw1goE7reIFjjxa7eNdB0BE_5Yay67A8SPSSZqTcjxRgez0fG6sC6_CZm6DBFICRNjhFADeesO93h-_krl6NfTDJOXj9N4JKwrw"
     tong_so_trang: int = Field(..., gt=0)
     mo_ta: Optional[str] = None
     id_the_loai: Optional[int] = None
@@ -55,13 +56,13 @@ class DanhGiaSachBase(BaseModel):
 
 class DanhGiaSachCreate(DanhGiaSachBase):
     id_sach: int
-    id_nguoi_dung: int
 
 class DanhGiaSachResponse(DanhGiaSachBase):
     id: int
     id_sach: int
     id_nguoi_dung: int
     ngay_tao: datetime
+    ten_dang_nhap: Optional[str] = None
 
     model_config = {"from_attributes": True}
 
@@ -71,7 +72,7 @@ class TienDoDocSachBase(BaseModel):
 
 class TienDoDocSachCreate(TienDoDocSachBase):
     id_sach: int
-    id_nguoi_dung: int
+    id_nguoi_dung: Optional[int] = None 
 
 class TienDoDocSachResponse(TienDoDocSachBase):
     id: int
@@ -84,7 +85,6 @@ class TienDoDocSachResponse(TienDoDocSachBase):
 # ------------------- YÊU THÍCH -------------------
 class YeuThichCreate(BaseModel):
     id_sach: int
-    id_nguoi_dung: int
 
 class YeuThichResponse(BaseModel):
     id: int

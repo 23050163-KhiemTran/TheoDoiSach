@@ -15,7 +15,7 @@ router = APIRouter(
 )
 
 # ------------------- Lấy danh sách sách -------------------
-@router.get("/", response_model=List[SachResponse])
+@router.get("/get", response_model=List[SachResponse])
 def lay_danh_sach_sach(skip: int = 0,
                        limit: int = 100,
                        db: Session = Depends(get_db)):
@@ -23,7 +23,7 @@ def lay_danh_sach_sach(skip: int = 0,
     return sach_list
 
 # ------------------- Lấy sách theo id -------------------
-@router.get("/{sach_id}", response_model=SachResponse)
+@router.get("/getId/{sach_id}", response_model=SachResponse)
 def lay_sach_theo_id(sach_id: int, db: Session = Depends(get_db)):
     sach = db.query(Sach).filter(Sach.id == sach_id).first()
     if not sach:
@@ -31,7 +31,7 @@ def lay_sach_theo_id(sach_id: int, db: Session = Depends(get_db)):
     return sach
 
 # ------------------- Tạo sách mới (ADMIN) -------------------
-@router.post("/", response_model=SachResponse)
+@router.post("/add", response_model=SachResponse)
 def tao_sach(sach: SachCreate,
              db: Session = Depends(get_db),
              current_user: dict = Depends(get_current_user)):
@@ -43,7 +43,8 @@ def tao_sach(sach: SachCreate,
         tac_gia=sach.tac_gia,
         tong_so_trang=sach.tong_so_trang,
         mo_ta=sach.mo_ta,
-        id_the_loai=sach.id_the_loai
+        id_the_loai=sach.id_the_loai,
+        anh_bia=sach.anh_bia
     )
     db.add(sach_moi)
     db.commit()
@@ -51,7 +52,7 @@ def tao_sach(sach: SachCreate,
     return sach_moi
 
 # ------------------- Cập nhật sách (ADMIN) -------------------
-@router.put("/{sach_id}", response_model=SachResponse)
+@router.put("/update/{sach_id}", response_model=SachResponse)
 def cap_nhat_sach(sach_id: int,
                    sach_update: SachCreate,
                    db: Session = Depends(get_db),
@@ -68,13 +69,14 @@ def cap_nhat_sach(sach_id: int,
     sach.tong_so_trang = sach_update.tong_so_trang
     sach.mo_ta = sach_update.mo_ta
     sach.id_the_loai = sach_update.id_the_loai
+    sach.anh_bia=sach_update.anh_bia
 
     db.commit()
     db.refresh(sach)
     return sach
 
 # ------------------- Xóa sách (ADMIN) -------------------
-@router.delete("/{sach_id}")
+@router.delete("/delete/{sach_id}")
 def xoa_sach(sach_id: int,
              db: Session = Depends(get_db),
              current_user: dict = Depends(get_current_user)):
