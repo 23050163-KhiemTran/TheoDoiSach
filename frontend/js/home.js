@@ -43,7 +43,7 @@ async function loadBooks() {
   const categoryValue = document.getElementById("categoryFilter").value;
 
   try {
-    const res = await fetch(`${API}/books/`, {
+    const res = await fetch(`${API}/sach/get/`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -51,7 +51,7 @@ async function loadBooks() {
 
     // FILTER SEARCH
     let filtered = books.filter((book) =>
-      book.ten_sach.toLowerCase().includes(searchValue)
+      book.tieu_de.toLowerCase().includes(searchValue)
     );
 
     // FILTER CATEGORY
@@ -63,26 +63,36 @@ async function loadBooks() {
     container.innerHTML = filtered
       .map(
         (book) => `
-            <div class="col-md-3">
-                <div class="card h-100 shadow-sm">
-                    <img src="${
-                      book.anh_bia || "https://via.placeholder.com/300"
-                    }"
-                         class="card-img-top" style="height: 250px; object-fit: cover;">
-
-                    <div class="card-body">
-                        <h5 class="card-title">${book.ten_sach}</h5>
-                        <p class="text-muted">${book.tac_gia}</p>
-                    </div>
-
-                    <div class="card-footer text-center">
-                        <button class="btn btn-primary btn-sm">
-                            <i class="fa-solid fa-circle-info"></i> Chi tiết
-                        </button>
-                    </div>
-                </div>
+      <div class="col-md-3 mb-4">
+        <a href="book_detail.html?id=${book.id}" class="text-decoration-none">
+          <div class="card h-100 shadow-sm border-0 position-relative overflow-hidden">
+            <!-- Ảnh bìa -->
+            <img src="${book.anh_bia || "https://via.placeholder.com/300"}" 
+                class="card-img-top rounded-top" 
+                style="height: 350px; object-fit: cover; transition: transform 0.3s;">
+            
+            <!-- Overlay khi hover -->
+            <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-25 d-flex justify-content-center align-items-center opacity-0 hover-opacity-100 transition">
+              <button class="btn btn-primary">
+                <i class="fa-solid fa-circle-info me-1"></i> Xem chi tiết
+              </button>
             </div>
-        `
+
+            <div class="card-body">
+              <h5 class="card-title fw-bold text-truncate">${
+                book.tieu_de || "Chưa có tiêu đề"
+              }</h5>
+              <p class="text-muted mb-1"><i class="fa-solid fa-user me-1"></i> ${
+                book.tac_gia || "Không rõ"
+              }</p>
+              <p class="text-muted mb-0"><i class="fa-solid fa-bookmark me-1"></i> ${
+                book.the_loai?.ten_the_loai || "Chưa có thể loại"
+              }</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    `
       )
       .join("");
   } catch (err) {

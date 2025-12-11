@@ -45,6 +45,7 @@ class Sach(Base):
     id_the_loai = Column(Integer, ForeignKey("the_loai.id"))
     ngay_tao = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     anh_bia = Column(Text)
+    link_sach = Column(Text)
 
     # Quan hệ
     the_loai = relationship("TheLoai", back_populates="sach_list")

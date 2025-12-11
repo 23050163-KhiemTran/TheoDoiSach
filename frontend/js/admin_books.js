@@ -66,6 +66,7 @@ async function addBook() {
     tong_so_trang: Number(document.getElementById("add_pages").value),
     mo_ta: document.getElementById("add_desc").value || "",
     anh_bia: document.getElementById("add_image").value || "",
+    link_sach: document.getElementById("add_link_sach").value || "",
   };
 
   const res = await fetch(`${API}/sach/add`, {
@@ -95,6 +96,7 @@ async function openEdit(id) {
   document.getElementById("edit_pages").value = b.tong_so_trang;
   document.getElementById("edit_image").value = b.anh_bia;
   document.getElementById("edit_desc").value = b.mo_ta;
+  document.getElementById("edit_link_sach").value = b.link_sach;
 
   new bootstrap.Modal(document.getElementById("editModal")).show();
 }
@@ -110,6 +112,7 @@ async function updateBook() {
     tong_so_trang: Number(document.getElementById("edit_pages").value),
     mo_ta: document.getElementById("edit_desc").value || "",
     anh_bia: document.getElementById("edit_image").value || "",
+    link_sach: document.getElementById("edit_link_sach").value || "",
   };
   await fetch(`${API}/sach/update/${id}`, {
     method: "PUT",

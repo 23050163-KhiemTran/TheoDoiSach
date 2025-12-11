@@ -34,6 +34,7 @@ class TheLoaiResponse(TheLoaiBase):
 class SachBase(BaseModel):
     tieu_de: str
     tac_gia: str
+    link_sach: str
     anh_bia: Optional[str] = "https://lh5.googleusercontent.com/proxy/KsVEvldAU8YY0hdydvLaAc3ijPxFU5SBgDK3JohiyTY8PRyHzF96pqMKGsNbTJA8l1y3S6hObE3v84n_e6SOaokbBzVKr-mnlB_Rw1goE7reIFjjxa7eNdB0BE_5Yay67A8SPSSZqTcjxRgez0fG6sC6_CZm6DBFICRNjhFADeesO93h-_krl6NfTDJOXj9N4JKwrw"
     tong_so_trang: int = Field(..., gt=0)
     mo_ta: Optional[str] = None
@@ -44,6 +45,7 @@ class SachCreate(SachBase):
 
 class SachResponse(SachBase):
     id: int
+    link_sach: Optional[str] = None
     ngay_tao: datetime
     the_loai: Optional[TheLoaiResponse] = None
 

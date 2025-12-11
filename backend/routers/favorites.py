@@ -79,22 +79,20 @@ def them_sach_yeu_thich(
 
 
 # ------------------- Xóa sách yêu thích -------------------
-@router.delete("/{fav_id}")
+@router.delete("/remove/{book_id}")
 def xoa_sach_yeu_thich(
-    fav_id: int,
+    book_id: int,
     db: Session = Depends(get_db),
     current_user: NguoiDung = Depends(get_current_user)
 ):
-    fav = db.query(YeuThich).filter(YeuThich.id == fav_id).first()
+    fav = db.query(YeuThich).filter(
+        YeuThich.id_sach == book_id,
+        YeuThich.id_nguoi_dung == current_user.id
+    ).first()
 
     if not fav:
         raise HTTPException(status_code=404, detail="Sách yêu thích không tồn tại")
 
-    # Không được xóa sách yêu thích của người khác
-    if fav.id_nguoi_dung != current_user.id and current_user.vai_tro != "admin":
-        raise HTTPException(status_code=403, detail="Bạn không có quyền xóa mục này")
-
     db.delete(fav)
     db.commit()
-
     return {"detail": "Xóa sách yêu thích thành công"}

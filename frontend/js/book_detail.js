@@ -18,6 +18,7 @@ function logout() {
 
 // ---------------- LOAD BOOK DETAIL ---------------------
 let bookData = null; // lưu thông tin sách toàn cục
+let isFavorite = false; // trạng thái yêu thích
 
 async function loadBookDetail() {
   const container = document.getElementById("bookDetail");
@@ -26,15 +27,21 @@ async function loadBookDetail() {
   const res = await fetch(`${API}/sach/getId/${bookId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  bookData = await res.json(); // gán cho biến toàn cục
+  bookData = await res.json();
 
-  // Lấy điểm trung bình
+  // Kiểm tra xem sách đã yêu thích chưa
+  const resFav = await fetch(`${API}/yeu_thich/me`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const favList = await resFav.json();
+  isFavorite = favList.some((f) => Number(f.id_sach) === Number(bookId));
+
+  // Điểm trung bình
   const resScore = await fetch(`${API}/danh_gia/sach/${bookId}/trung_binh`);
   const scoreData = await resScore.json();
   const avgScore = scoreData.diem_trung_binh ?? 0;
   const reviewCount = scoreData.so_luong_danh_gia ?? 0;
 
-  // Hiển thị sao
   const stars = `
     ${Array.from(
       { length: Math.round(avgScore) },
@@ -51,7 +58,9 @@ async function loadBookDetail() {
     headers: { Authorization: `Bearer ${token}` },
   });
   const allProgress = await resProgress.json();
-  const existing = allProgress.find((p) => p.id_sach == bookId);
+  const existing = allProgress.find(
+    (p) => Number(p.id_sach) === Number(bookId)
+  );
   const soTrangDaDoc = existing?.so_trang_da_doc ?? 0;
   const tongSoTrang = bookData.tong_so_trang ?? 1;
   const progressPercent = Math.min(
@@ -59,21 +68,34 @@ async function loadBookDetail() {
     Math.round((soTrangDaDoc / tongSoTrang) * 100)
   );
 
+  // Hiển thị HTML
   container.innerHTML = `
 <div class="row g-4">
-  <!-- Ảnh bìa sách với nút yêu thích absolute -->
   <div class="col-md-4 position-relative">
     <div class="card shadow-sm">
-      <img src="${bookData.anh_bia || "https://via.placeholder.com/300"}"
-           class="card-img-top" style="height:400px; object-fit:cover;">
-      <button class="btn btn-danger position-absolute top-0 end-0 m-2" 
-              onclick="addFavorite()" title="Thêm vào yêu thích">
+      <img src="${
+        bookData.anh_bia || "https://via.placeholder.com/300"
+      }" class="card-img-top" style="height:420px; object-fit:cover;">
+      
+      <!-- Nút yêu thích / hủy yêu thích -->
+      <button id="favoriteBtn" class="btn ${
+        isFavorite ? "btn-danger" : "btn-secondary"
+      } position-absolute top-0 end-0 m-2" 
+              title="${isFavorite ? "Hủy yêu thích" : "Thêm vào yêu thích"}">
         <i class="fa-solid fa-heart"></i>
       </button>
+
+      <!-- Nút đọc sách -->
+      <div class="card-body text-center position-absolute bottom-0 bg-black opacity-75 w-100">
+        <a href="${
+          bookData.link_sach || "#"
+        }" class="w-100 text-decoration-none text-white fw-semibold fs-5">
+          <i class="fa-solid fa-book-open me-2"></i>Đọc sách
+        </a>
+      </div>
     </div>
   </div>
 
-  <!-- Thông tin sách -->
   <div class="col-md-8 d-flex flex-column justify-content-between">
     <div>
       <h2 class="fw-bold">${bookData.tieu_de}</h2>
@@ -84,23 +106,17 @@ async function loadBookDetail() {
         bookData.the_loai?.ten_the_loai || "Chưa có"
       }</p>
 
-      <!-- Điểm trung bình -->
       <div class="mb-3">
         <h5 class="mb-1">Điểm trung bình</h5>
-        <div>
-          ${stars} <small class="text-muted">(${reviewCount} đánh giá)</small>
-        </div>
+        <div>${stars} <small class="text-muted">(${reviewCount} đánh giá)</small></div>
       </div>
 
-      <!-- Mô tả sách -->
       <div class="mb-3">
         <h5>Mô tả</h5>
         <p>${bookData.mo_ta || "Không có mô tả."}</p>
       </div>
 
-      <!-- Tiến độ đọc + cập nhật cùng hàng -->
       <div class="d-flex align-items-center gap-2">
-        <!-- Thanh tiến độ -->
         <div class="flex-grow-1">
           <div class="progress" style="height: 25px;">
             <div class="progress-bar bg-success d-flex align-items-center justify-content-center" 
@@ -115,10 +131,8 @@ async function loadBookDetail() {
           </div>
         </div>
 
-        <!-- Input + nút cập nhật -->
         <div class="input-group" style="width: 150px;">
-          <input type="number" id="pagesReadInput" class="form-control" min="0" max="${tongSoTrang}" 
-                 placeholder="Trang">
+          <input type="number" id="pagesReadInput" class="form-control" min="0" max="${tongSoTrang}" placeholder="Trang">
           <button class="btn btn-success" id="updateProgressBtn"><i class="fa-solid fa-sync"></i></button>
         </div>
       </div>
@@ -127,18 +141,21 @@ async function loadBookDetail() {
 </div>
 `;
 
-  // ---------------- CẬP NHẬT TIẾN ĐỘ ---------------------
+  // Gán sự kiện toggle yêu thích ngay sau khi render
+  document
+    .getElementById("favoriteBtn")
+    .addEventListener("click", toggleFavorite);
+
+  // Gán sự kiện cập nhật tiến độ
   document
     .getElementById("updateProgressBtn")
     .addEventListener("click", async () => {
       const pagesRead = Number(document.getElementById("pagesReadInput").value);
-
       if (isNaN(pagesRead) || pagesRead < 0 || pagesRead > tongSoTrang) {
         alert(`Vui lòng nhập số trang từ 0 đến ${tongSoTrang}`);
         return;
       }
 
-      // Kiểm tra tiến độ hiện tại của user
       let progressId = existing?.id ?? null;
       const method = progressId ? "PUT" : "POST";
       const url = progressId
@@ -159,13 +176,54 @@ async function loadBookDetail() {
 
       if (res.ok) {
         alert("Cập nhật tiến độ thành công!");
-        loadBookDetail(); // reload để cập nhật progress bar
+        loadBookDetail();
       } else {
         const err = await res.json();
         alert("Lỗi khi cập nhật tiến độ: " + JSON.stringify(err));
       }
     });
 }
+
+// ---------------- TOGGLE FAVORITE ---------------------
+async function toggleFavorite() {
+  try {
+    let res;
+    if (isFavorite) {
+      // Hủy yêu thích
+      res = await fetch(`${API}/yeu_thich/remove/${Number(bookId)}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } else {
+      // Thêm yêu thích
+      res = await fetch(`${API}/yeu_thich/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ id_sach: Number(bookId) }),
+      });
+    }
+
+    if (res.ok) {
+      isFavorite = !isFavorite; // đổi trạng thái ngay lập tức
+      const btn = document.getElementById("favoriteBtn");
+      btn.className = `btn ${
+        isFavorite ? "btn-danger" : "btn-secondary"
+      } position-absolute top-0 end-0 m-2`;
+      btn.title = isFavorite ? "Hủy yêu thích" : "Thêm vào yêu thích";
+    } else {
+      const err = await res.json();
+      alert("Lỗi: " + (err.detail || JSON.stringify(err)));
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Lỗi khi cập nhật yêu thích: " + error.message);
+  }
+}
+
+// ---------------- INIT ---------------------
 loadBookDetail();
 
 // ---------------- ADD TO FAVORITE ---------------------

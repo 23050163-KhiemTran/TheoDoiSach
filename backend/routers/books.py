@@ -44,7 +44,8 @@ def tao_sach(sach: SachCreate,
         tong_so_trang=sach.tong_so_trang,
         mo_ta=sach.mo_ta,
         id_the_loai=sach.id_the_loai,
-        anh_bia=sach.anh_bia
+        anh_bia=sach.anh_bia,
+        link_sach=sach.link_sach
     )
     db.add(sach_moi)
     db.commit()
@@ -70,6 +71,7 @@ def cap_nhat_sach(sach_id: int,
     sach.mo_ta = sach_update.mo_ta
     sach.id_the_loai = sach_update.id_the_loai
     sach.anh_bia=sach_update.anh_bia
+    sach.link_sach=sach_update.link_sach
 
     db.commit()
     db.refresh(sach)
