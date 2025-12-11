@@ -20,7 +20,7 @@ def hash_password(password: str):
 
 
 # ------------------- Lấy danh sách người dùng (CHỈ ADMIN) -------------------
-@router.get("/", response_model=List[NguoiDungResponse])
+@router.get("/getAll", response_model=List[NguoiDungResponse])
 def lay_danh_sach_nguoi_dung(
     skip: int = 0,
     limit: int = 100,
@@ -34,7 +34,7 @@ def lay_danh_sach_nguoi_dung(
 
 
 # ------------------- Lấy người dùng theo id -------------------
-@router.get("/{user_id}", response_model=NguoiDungResponse)
+@router.get("/getId/{user_id}", response_model=NguoiDungResponse)
 def lay_nguoi_dung_theo_id(
     user_id: int,
     db: Session = Depends(get_db),
@@ -61,7 +61,7 @@ def thong_tin_cua_toi(
 
 
 # ------------------- Tạo người dùng mới -------------------
-@router.post("/", response_model=NguoiDungResponse)
+@router.post("/add", response_model=NguoiDungResponse)
 def tao_nguoi_dung(
     user: NguoiDungCreate,
     db: Session = Depends(get_db)
@@ -82,7 +82,7 @@ def tao_nguoi_dung(
         ten_dang_nhap=user.ten_dang_nhap,
         email=user.email,
         mat_khau_hash=hashed_pwd,
-        vai_tro="user"   # << Bảo mật quan trọng!
+        vai_tro="user"
     )
 
     db.add(new_user)
@@ -105,3 +105,44 @@ def doi_mat_khau(
     current_user.mat_khau_hash = pwd_context.hash(body.new_password)
     db.commit()
     return {"detail": "Đổi mật khẩu thành công"}
+
+# ------------------- CẬP NHẬT USER (Admin) -------------------
+@router.put("/update/{user_id}", response_model=NguoiDungResponse)
+def cap_nhat_user(
+    user_id: int,
+    data: dict = Body(...),
+    db: Session = Depends(get_db),
+    current_user: NguoiDung = Depends(get_current_user)
+):
+    if current_user.vai_tro != "admin":
+        raise HTTPException(status_code=403, detail="Chỉ admin mới được cập nhật người dùng")
+
+    user = db.query(NguoiDung).filter(NguoiDung.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Người dùng không tồn tại")
+
+    user.vai_tro = data.get("vai_tro", user.vai_tro)
+
+    db.commit()
+    db.refresh(user)
+    return user
+
+
+# ------------------- XÓA USER (Admin) -------------------
+@router.delete("/delete/{user_id}")
+def xoa_user(
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user: NguoiDung = Depends(get_current_user)
+):
+    if current_user.vai_tro != "admin":
+        raise HTTPException(status_code=403, detail="Chỉ admin mới được xóa người dùng")
+
+    user = db.query(NguoiDung).filter(NguoiDung.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Người dùng không tồn tại")
+
+    db.delete(user)
+    db.commit()
+
+    return {"detail": "Xóa người dùng thành công"}
