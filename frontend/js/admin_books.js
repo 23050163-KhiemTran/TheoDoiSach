@@ -19,7 +19,7 @@ async function loadBooks() {
   data.forEach((book) => {
     container.innerHTML += `
             <div class="col-md-4">
-                <div class="card shadow-sm h-100">
+                <div class="card shadow-sm h-100 border-0">
 
                     <a href="book_detail.html?id=${book.id}">
                       <img src="${
@@ -27,14 +27,22 @@ async function loadBooks() {
                         "https://lh5.googleusercontent.com/proxy/KsVEvldAU8YY0hdydvLaAc3ijPxFU5SBgDK3JohiyTY8PRyHzF96pqMKGsNbTJA8l1y3S6hObE3v84n_e6SOaokbBzVKr-mnlB_Rw1goE7reIFjjxa7eNdB0BE_5Yay67A8SPSSZqTcjxRgez0fG6sC6_CZm6DBFICRNjhFADeesO93h-_krl6NfTDJOXj9N4JKwrw"
                       }"
                           class="card-img-top"
-                          style="height:240px; object-fit:cover">
+                          style="height:300px; object-fit:cover">
                       </a>
 
-                    <div class="card-body d-flex flex-column">
-                        <h5>${book.tieu_de}</h5>
-                        <p class="text-muted">Tác giả: ${book.tac_gia}</p>
+                    <div class="card-body d-flex flex-column bg-secondary text-white">
+                        <h5 class="fw-semibold">${book.tieu_de}</h5>
+                        <hr/>
+                        <p class="text-white"><strong>Tác giả:</strong> ${
+                          book.tac_gia
+                        }</p>
+                        <hr/>
+                        <p class="text-white"><strong>Thể loại:</strong> ${
+                          book.the_loai?.ten_the_loai || "Chưa có thể loại"
+                        }</p>
 
-                        <div class="mt-auto d-flex justify-content-between">
+                        <hr/>
+                        <div class="mt-auto d-flex justify-content-end gap-2">
                             <button class="btn btn-warning" onclick="openEdit(${
                               book.id
                             })">
@@ -150,3 +158,9 @@ async function loadCategories() {
     .join("");
 }
 loadCategories();
+
+// -------------------- LOGOUT --------------------
+function logout() {
+  localStorage.removeItem("token");
+  window.location.href = "login.html";
+}
