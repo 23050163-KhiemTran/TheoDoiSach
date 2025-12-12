@@ -79,7 +79,7 @@ window.loadBooks = async function () {
             </div>
 
             <div class="card-body bg-secondary">
-              <h5 class="card-title fw-bold text-truncate text-white">${
+              <h5 class="card-title fw-bold text-truncate text-white text-capitalize">${
                 book.tieu_de || "Chưa có tiêu đề"
               }</h5>
               <p class="text-white mb-1"><i class="fa-solid fa-user me-1"></i> <strong>Tác giả: </strong>${
