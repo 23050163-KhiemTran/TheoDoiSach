@@ -2,11 +2,7 @@ from sqlalchemy.orm import Session
 from database import SessionLocal, engine
 from models import NguoiDung
 from passlib.context import CryptContext
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
+from utils.security import get_password_hash
 
 def create_admin():
     db = SessionLocal()
