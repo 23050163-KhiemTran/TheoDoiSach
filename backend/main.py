@@ -8,14 +8,14 @@ app = FastAPI(title="Book Club / Reading Tracker")
 
 # Cho phép frontend localhost truy cập
 origins = [
-    "http://localhost:5500",  # ví dụ nếu dùng Live Server
+    "http://localhost:5500",
     "http://127.0.0.1:5500",
-    "http://localhost:3000",  # nếu dùng React hay frontend khác
+    "http://localhost:3000",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,       # danh sách domain được phép
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],         # GET, POST, PUT, DELETE, OPTIONS...
     allow_headers=["*"],         # Content-Type, Authorization...
