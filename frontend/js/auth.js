@@ -1,4 +1,4 @@
-const API = import.meta.env.VITE_API_URL;
+import { API } from "./config.js";
 
 function showAlert(message, type = "danger") {
   const alertBox = document.getElementById("alert-box");

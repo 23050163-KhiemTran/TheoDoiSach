@@ -165,12 +165,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
     <script>
-      const API = import.meta.env.VITE_API_URL + "/the_loai";
+      import { API } from "../config.js";
+
+      const THE_LOAI_URL = API + "/the_loai";
       const token = localStorage.getItem("token"); // Admin token
 
       // Tải danh sách thể loại
       async function loadCategories() {
-        const res = await fetch(API + "/get", {
+        const res = await fetch(THE_LOAI_URL + "/get", {
           headers: { Authorization: "Bearer " + token },
         });
         const data = await res.json();
@@ -209,7 +211,7 @@
 
           const name = document.getElementById("categoryName").value;
 
-          await fetch(API + "/add", {
+          await fetch(THE_LOAI_URL + "/add", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -235,7 +237,7 @@
         const id = document.getElementById("editCategoryId").value;
         const name = document.getElementById("editCategoryName").value;
 
-        await fetch(API + "/save/" + id, {
+        await fetch(THE_LOAI_URL + "/save/" + id, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -254,7 +256,7 @@
       async function deleteCategory(id) {
         if (!confirm("Bạn có chắc muốn xóa thể loại này?")) return;
 
-        await fetch(API + "/delete/" + id, {
+        await fetch(THE_LOAI_URL + "/delete/" + id, {
           method: "DELETE",
           headers: { Authorization: "Bearer " + token },
         });

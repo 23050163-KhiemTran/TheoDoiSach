@@ -1,4 +1,4 @@
-const API = import.meta.env.VITE_API_URL;
+import { API } from "./config.js";
 
 function getAuthHeader() {
   const token = localStorage.getItem("token");
