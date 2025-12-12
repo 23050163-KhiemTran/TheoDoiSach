@@ -1,1 +1,1 @@
-export const API = "https://dragonreadingtracker.onrender.com/the_loai";
+export const API = "https://dragonreadingtracker.onrender.com";
