@@ -43,7 +43,7 @@ window.loadFavorites = async function () {
                      onclick="goToDetail(${item.id})">
 
                 <div class="card-body bg-secondary d-flex flex-column">
-                    <h5 class="card-title text-white" style="cursor:pointer" onclick="goToDetail(${
+                    <h5 class="card-title text-white text-capitalize" style="cursor:pointer" onclick="goToDetail(${
                       item.id
                     })">
                         ${item.tieu_de}
@@ -52,7 +52,7 @@ window.loadFavorites = async function () {
                       item.tac_gia
                     }</p>
 
-                    <button class="btn btn-danger mt-auto" onclick="removeFavorite(${
+                    <button class="btn btn-danger mt-auto text-capitalize" onclick="removeFavorite(${
                       item.id
                     })">
                         <i class="fa-solid fa-trash"></i> Xóa khỏi yêu thích
