@@ -9,6 +9,7 @@ app = FastAPI(title="Book Club / Reading Tracker")
 # Cho phép frontend localhost truy cập
 origins = [
     "https://dragonreadingtracker.onrender.com",
+    "https://theo-doi-sach.vercel.app/",
     "http://127.0.0.1:5500",
     "http://localhost:3000",
 ]
