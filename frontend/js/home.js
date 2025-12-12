@@ -8,13 +8,13 @@ if (!token) {
 }
 
 // -------------------- LOGOUT --------------------
-function logout() {
+window.logout = function (bookId) {
   localStorage.removeItem("token");
   window.location.href = "login.html";
-}
+};
 
 // -------------------- LOAD CATEGORY --------------------
-async function loadCategories() {
+window.loadCategories = async function (bookId) {
   try {
     const res = await fetch(`${API}/the_loai/get`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -29,12 +29,12 @@ async function loadCategories() {
   } catch (err) {
     console.error("Lỗi load thể loại:", err);
   }
-}
+};
 
 loadCategories();
 
 // -------------------- LOAD BOOK LIST --------------------
-async function loadBooks() {
+window.loadBooks = async function () {
   const container = document.getElementById("book-list");
 
   const searchValue = document
@@ -98,7 +98,7 @@ async function loadBooks() {
   } catch (err) {
     console.error("Lỗi load sách:", err);
   }
-}
+};
 
 loadBooks();
 
