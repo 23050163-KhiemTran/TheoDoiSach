@@ -13,7 +13,7 @@ def create_admin():
     admin = NguoiDung(
         ten_dang_nhap="admin",
         email="23050163@student.bdu.edu.vn",
-        hashed_password=get_password_hash("admin123"),
+        mat_khau_hash=get_password_hash("admin123"),
         vai_tro="admin"
     )
     db.add(admin)
