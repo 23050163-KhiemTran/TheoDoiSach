@@ -1,4 +1,4 @@
-const API = "http://localhost:8000";
+const API = "https://dragonreadingtracker.onrender.com";
 
 function showAlert(message, type = "danger") {
   const alertBox = document.getElementById("alert-box");
