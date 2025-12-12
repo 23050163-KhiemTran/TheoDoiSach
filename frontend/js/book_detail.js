@@ -88,7 +88,9 @@ window.loadBookDetail = async function () {
       <!-- Nút đọc sách -->
       <div class="card-body text-center position-absolute bottom-0 bg-black opacity-75 w-100">
         <a href="${
-          bookData.link_sach + "chuong-" + soTrangDaDoc || "#"
+          soTrangDaDoc
+            ? bookData.link_sach + "chuong-" + soTrangDaDoc
+            : bookData.link_sach
         }" class="w-100 text-decoration-none text-white fw-semibold fs-5">
           <i class="fa-solid fa-book-open me-2"></i>Đọc sách
         </a>
