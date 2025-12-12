@@ -115,20 +115,20 @@ window.loadBookDetail = async function () {
       <hr/>
 
       <div class="mb-3">
-        <h5 class="mb-1">Điểm trung bình</h5>
+        <h5 class="mb-1 text-capitalize">Điểm trung bình</h5>
         <div>${stars} <small class="text-secondary">(${reviewCount} đánh giá)</small></div>
       </div>
 
       <hr/>
 
       <div class="mb-3">
-        <h5>Mô tả</h5>
+        <h5 class="text-capitalize">Mô tả</h5>
         <p class="text-white">${bookData.mo_ta || "Không có mô tả."}</p>
       </div>
 
       <hr/>
 
-      <h5>Tiến độ</h5>
+      <h5 class="text-capitalize">Tiến độ</h5>
       <div class="d-flex align-items-center gap-2">
         <div class="flex-grow-1" title="${
           progressPercent > 0
