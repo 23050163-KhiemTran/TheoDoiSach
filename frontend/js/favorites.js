@@ -2,10 +2,10 @@ import { API } from "./config.js";
 const token = localStorage.getItem("token");
 
 // ---------------- LOGOUT ---------------------
-function logout() {
+window.logout = function () {
   localStorage.removeItem("token");
   window.location.href = "login.html";
-}
+};
 
 // Nếu chưa đăng nhập → chuyển về Login
 if (!token) {
@@ -14,7 +14,7 @@ if (!token) {
 }
 
 // ---------------- LOAD FAVORITES ---------------------
-async function loadFavorites() {
+window.loadFavorites = async function () {
   const container = document.getElementById("favoriteList");
 
   const res = await fetch(`${API}/yeu_thich/me`, {
@@ -43,7 +43,7 @@ async function loadFavorites() {
                      onclick="goToDetail(${item.id})">
 
                 <div class="card-body bg-secondary d-flex flex-column">
-                    <h5 class="card-title text-white" style="cursor:pointer" onclick="goToDetail(${
+                    <h5 class="card-title text-white text-capitalize" style="cursor:pointer" onclick="goToDetail(${
                       item.id
                     })">
                         ${item.tieu_de}
@@ -52,7 +52,7 @@ async function loadFavorites() {
                       item.tac_gia
                     }</p>
 
-                    <button class="btn btn-danger mt-auto" onclick="removeFavorite(${
+                    <button class="btn btn-danger mt-auto text-capitalize" onclick="removeFavorite(${
                       item.id
                     })">
                         <i class="fa-solid fa-trash"></i> Xóa khỏi yêu thích
@@ -63,12 +63,12 @@ async function loadFavorites() {
     `
     )
     .join("");
-}
+};
 
 loadFavorites();
 
 // ---------------- REMOVE FAVORITE ---------------------
-async function removeFavorite(bookId) {
+window.removeFavorite = async function (bookId) {
   if (!confirm("Bạn muốn xóa khỏi danh sách yêu thích?")) return;
 
   const res = await fetch(`${API}/yeu_thich/remove/${bookId}`, {
@@ -81,9 +81,9 @@ async function removeFavorite(bookId) {
   } else {
     alert("Lỗi khi xóa.");
   }
-}
+};
 
 // ---------------- GO TO DETAIL ---------------------
-function goToDetail(id) {
+window.goToDetail = function (id) {
   window.location.href = `book_detail.html?id=${id}`;
-}
+};

@@ -11,16 +11,16 @@ const params = new URLSearchParams(window.location.search);
 const bookId = params.get("id");
 
 // ---------------- LOGOUT ---------------------
-function logout() {
+window.logout = function () {
   localStorage.removeItem("token");
   window.location.href = "login.html";
-}
+};
 
 // ---------------- LOAD BOOK DETAIL ---------------------
 let bookData = null; // lưu thông tin sách toàn cục
 let isFavorite = false; // trạng thái yêu thích
 
-async function loadBookDetail() {
+window.loadBookDetail = async function () {
   const container = document.getElementById("bookDetail");
 
   // Lấy thông tin sách
@@ -88,7 +88,9 @@ async function loadBookDetail() {
       <!-- Nút đọc sách -->
       <div class="card-body text-center position-absolute bottom-0 bg-black opacity-75 w-100">
         <a href="${
-          bookData.link_sach || "#"
+          soTrangDaDoc
+            ? bookData.link_sach + "chuong-" + soTrangDaDoc
+            : bookData.link_sach
         }" class="w-100 text-decoration-none text-white fw-semibold fs-5">
           <i class="fa-solid fa-book-open me-2"></i>Đọc sách
         </a>
@@ -115,20 +117,20 @@ async function loadBookDetail() {
       <hr/>
 
       <div class="mb-3">
-        <h5 class="mb-1">Điểm trung bình</h5>
+        <h5 class="mb-1 text-capitalize">Điểm trung bình</h5>
         <div>${stars} <small class="text-secondary">(${reviewCount} đánh giá)</small></div>
       </div>
 
       <hr/>
 
       <div class="mb-3">
-        <h5>Mô tả</h5>
+        <h5 class="text-capitalize">Mô tả</h5>
         <p class="text-white">${bookData.mo_ta || "Không có mô tả."}</p>
       </div>
 
       <hr/>
 
-      <h5>Tiến độ</h5>
+      <h5 class="text-capitalize">Tiến độ</h5>
       <div class="d-flex align-items-center gap-2">
         <div class="flex-grow-1" title="${
           progressPercent > 0
@@ -201,10 +203,10 @@ async function loadBookDetail() {
         alert("Lỗi khi cập nhật tiến độ: " + JSON.stringify(err));
       }
     });
-}
+};
 
 // ---------------- TOGGLE FAVORITE ---------------------
-async function toggleFavorite() {
+window.toggleFavorite = async function () {
   try {
     let res;
     if (isFavorite) {
@@ -240,13 +242,13 @@ async function toggleFavorite() {
     console.error(error);
     alert("Lỗi khi cập nhật yêu thích: " + error.message);
   }
-}
+};
 
 // ---------------- INIT ---------------------
 loadBookDetail();
 
 // ---------------- ADD TO FAVORITE ---------------------
-async function addFavorite() {
+window.addFavorite = async function () {
   try {
     const res = await fetch(`${API}/yeu_thich/add`, {
       method: "POST",
@@ -254,7 +256,7 @@ async function addFavorite() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ id_sach: Number(bookId) }), // chỉ gửi id_sach
+      body: JSON.stringify({ id_sach: Number(bookId) }),
     });
 
     if (res.ok) {
@@ -269,10 +271,10 @@ async function addFavorite() {
     console.error(error);
     alert("Lỗi khi thêm vào yêu thích: " + error.message);
   }
-}
+};
 
 // ---------------- LOAD REVIEWS ---------------------
-async function loadReviews() {
+window.loadReviews = async function () {
   const list = document.getElementById("reviewList");
 
   const res = await fetch(`${API}/danh_gia/sach/${bookId}`, {
@@ -318,7 +320,7 @@ async function loadReviews() {
       `
     )
     .join("");
-}
+};
 
 loadReviews();
 
@@ -327,7 +329,7 @@ document.getElementById("reviewForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const text = document.getElementById("reviewText").value.trim();
-  const diem = Number(document.getElementById("reviewScore").value); // nếu có input điểm
+  const diem = Number(document.getElementById("reviewScore").value);
 
   if (!text || !diem || diem <= 0) {
     alert("Vui lòng nhập nội dung và điểm đánh giá.");

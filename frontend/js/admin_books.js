@@ -9,7 +9,7 @@ function getAuthHeader() {
 }
 
 // ---------------- Lấy danh sách sách ----------------
-async function loadBooks() {
+window.loadBooks = async function () {
   const res = await fetch(`${API}/sach/get`);
   const data = await res.json();
 
@@ -61,12 +61,12 @@ async function loadBooks() {
             </div>
         `;
   });
-}
+};
 
 loadBooks();
 
 // ---------------- Thêm sách ----------------
-async function addBook() {
+window.addBook = async function () {
   const body = {
     tieu_de: document.getElementById("add_title").value,
     tac_gia: document.getElementById("add_author").value,
@@ -91,9 +91,9 @@ async function addBook() {
   document.getElementById("addForm").reset();
   loadBooks();
   bootstrap.Modal.getInstance(document.getElementById("addModal")).hide();
-}
+};
 // ---------------- Mở modal sửa ----------------
-async function openEdit(id) {
+window.openEdit = async function (id) {
   const res = await fetch(`${API}/sach/getId/${id}`);
   const b = await res.json();
 
@@ -107,10 +107,10 @@ async function openEdit(id) {
   document.getElementById("edit_link_sach").value = b.link_sach;
 
   new bootstrap.Modal(document.getElementById("editModal")).show();
-}
+};
 
 // ---------------- Cập nhật sách ----------------
-async function updateBook() {
+window.updateBook = async function () {
   const id = document.getElementById("edit_id").value;
 
   const body = {
@@ -131,10 +131,10 @@ async function updateBook() {
   loadBooks();
 
   bootstrap.Modal.getInstance(document.getElementById("editModal")).hide();
-}
+};
 
 // ---------------- Xóa sách ----------------
-async function deleteBook(id) {
+window.deleteBook = async function (id) {
   if (!confirm("Bạn có chắc muốn xóa sách này?")) return;
 
   await fetch(`${API}/sach/delete/${id}`, {
@@ -142,10 +142,10 @@ async function deleteBook(id) {
   });
 
   loadBooks();
-}
+};
 
 // ---------------- Load thể loại ----------------
-async function loadCategories() {
+window.loadCategories = async function () {
   const res = await fetch(`${API}/the_loai/get`, { headers: getAuthHeader() });
   const categories = await res.json();
   const select = document.getElementById("add_category");
@@ -156,11 +156,11 @@ async function loadCategories() {
   select2.innerHTML += categories
     .map((c) => `<option value="${c.id}">${c.ten_the_loai}</option>`)
     .join("");
-}
+};
 loadCategories();
 
 // -------------------- LOGOUT --------------------
-function logout() {
+window.logout = async function () {
   localStorage.removeItem("token");
   window.location.href = "login.html";
-}
+};

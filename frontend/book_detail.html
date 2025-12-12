@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chi tiết sách</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://i.pinimg.com/736x/2a/39/7e/2a397e20967aa20b0724a7e2438711f3.jpg"
+    />
     <!-- Bootstrap -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -69,10 +74,14 @@
       <hr class="my-4" />
 
       <!-- ADD REVIEW -->
-      <h5>Đóng góp ý kiến của bạn</h5>
+      <h5 class="text-capitalize">
+        <i class="fa-solid fa-comment-dots"></i> Đóng góp ý kiến của bạn
+      </h5>
       <form id="reviewForm" class="mt-3">
         <div class="mb-2">
-          <label for="reviewScore" class="form-label">Điểm đánh giá</label>
+          <label for="reviewScore" class="form-label text-capitalize"
+            >Điểm đánh giá</label
+          >
           <select id="reviewScore" class="form-select">
             <option value="0" selected>Cho điểm</option>
             <option value="1">1 - Kém</option>
@@ -84,7 +93,9 @@
         </div>
 
         <div class="mb-2">
-          <label for="reviewText" class="form-label">Nhận xét</label>
+          <label for="reviewText" class="form-label text-capitalize"
+            >Nhận xét</label
+          >
           <textarea
             id="reviewText"
             class="form-control"
@@ -93,7 +104,7 @@
           ></textarea>
         </div>
 
-        <button class="btn btn-primary mt-2">
+        <button class="btn btn-primary mt-2 text-capitalize">
           <i class="fa-solid fa-paper-plane"></i> Gửi đánh giá
         </button>
       </form>
@@ -101,7 +112,7 @@
       <hr class="my-4" />
 
       <!-- REVIEW LIST -->
-      <h4><i class="fa-solid fa-comments"></i> Đánh giá</h4>
+      <h4><i class="fa-solid fa-comments text-capitalize"></i> Đánh giá</h4>
       <div id="reviewList" class="mt-3">
         <!-- Render bằng JS -->
       </div>
