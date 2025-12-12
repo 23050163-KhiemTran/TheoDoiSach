@@ -11,16 +11,16 @@ const params = new URLSearchParams(window.location.search);
 const bookId = params.get("id");
 
 // ---------------- LOGOUT ---------------------
-function logout() {
+window.logout = function () {
   localStorage.removeItem("token");
   window.location.href = "login.html";
-}
+};
 
 // ---------------- LOAD BOOK DETAIL ---------------------
 let bookData = null; // lưu thông tin sách toàn cục
 let isFavorite = false; // trạng thái yêu thích
 
-async function loadBookDetail() {
+window.loadBookDetail = async function () {
   const container = document.getElementById("bookDetail");
 
   // Lấy thông tin sách
@@ -201,10 +201,10 @@ async function loadBookDetail() {
         alert("Lỗi khi cập nhật tiến độ: " + JSON.stringify(err));
       }
     });
-}
+};
 
 // ---------------- TOGGLE FAVORITE ---------------------
-async function toggleFavorite() {
+window.toggleFavorite = async function () {
   try {
     let res;
     if (isFavorite) {
@@ -240,13 +240,13 @@ async function toggleFavorite() {
     console.error(error);
     alert("Lỗi khi cập nhật yêu thích: " + error.message);
   }
-}
+};
 
 // ---------------- INIT ---------------------
 loadBookDetail();
 
 // ---------------- ADD TO FAVORITE ---------------------
-async function addFavorite() {
+window.addFavorite = async function () {
   try {
     const res = await fetch(`${API}/yeu_thich/add`, {
       method: "POST",
@@ -254,7 +254,7 @@ async function addFavorite() {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ id_sach: Number(bookId) }), // chỉ gửi id_sach
+      body: JSON.stringify({ id_sach: Number(bookId) }),
     });
 
     if (res.ok) {
@@ -269,10 +269,10 @@ async function addFavorite() {
     console.error(error);
     alert("Lỗi khi thêm vào yêu thích: " + error.message);
   }
-}
+};
 
 // ---------------- LOAD REVIEWS ---------------------
-async function loadReviews() {
+window.loadReviews = async function () {
   const list = document.getElementById("reviewList");
 
   const res = await fetch(`${API}/danh_gia/sach/${bookId}`, {
@@ -318,7 +318,7 @@ async function loadReviews() {
       `
     )
     .join("");
-}
+};
 
 loadReviews();
 
@@ -327,7 +327,7 @@ document.getElementById("reviewForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const text = document.getElementById("reviewText").value.trim();
-  const diem = Number(document.getElementById("reviewScore").value); // nếu có input điểm
+  const diem = Number(document.getElementById("reviewScore").value);
 
   if (!text || !diem || diem <= 0) {
     alert("Vui lòng nhập nội dung và điểm đánh giá.");
