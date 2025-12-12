@@ -1,4 +1,4 @@
-const API = "https://dragonreadingtracker.onrender.com";
+const API = import.meta.env.VITE_API_URL;
 
 function getAuthHeader() {
   const token = localStorage.getItem("token");

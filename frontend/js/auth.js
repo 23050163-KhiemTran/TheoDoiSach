@@ -1,4 +1,4 @@
-const API = "https://dragonreadingtracker.onrender.com";
+const API = import.meta.env.VITE_API_URL;
 
 function showAlert(message, type = "danger") {
   const alertBox = document.getElementById("alert-box");
