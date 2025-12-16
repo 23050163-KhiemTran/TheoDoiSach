@@ -140,6 +140,12 @@
       import { API } from "./js/config.js";
       const API_URL = API;
 
+      // -------------------- LOGOUT --------------------
+      window.logout = async function () {
+        localStorage.removeItem("token");
+        window.location.href = "login.html";
+      };
+
       // Kiểm tra Admin
       document.addEventListener("DOMContentLoaded", async () => {
         const token = localStorage.getItem("token");
@@ -172,11 +178,6 @@
 
         taiDanhSachUser();
       });
-
-      function dangXuat() {
-        localStorage.clear();
-        window.location.href = "login.html";
-      }
 
       // ==========================
       // LẤY DANH SÁCH USER
@@ -305,12 +306,6 @@
 
         alert("Xóa thành công!");
         taiDanhSachUser();
-      }
-
-      // -------------------- LOGOUT --------------------
-      function logout() {
-        localStorage.removeItem("token");
-        window.location.href = "login.html";
       }
     </script>
   </body>

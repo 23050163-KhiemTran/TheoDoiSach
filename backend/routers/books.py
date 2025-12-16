@@ -1,6 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
+import requests
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 
 from database import get_db
 from models import Sach
@@ -21,6 +22,7 @@ def lay_danh_sach_sach(skip: int = 0,
                        db: Session = Depends(get_db)):
     sach_list = db.query(Sach).offset(skip).limit(limit).all()
     return sach_list
+
 
 # ------------------- Lấy sách theo id -------------------
 @router.get("/getId/{sach_id}", response_model=SachResponse)

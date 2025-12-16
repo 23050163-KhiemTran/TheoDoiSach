@@ -1,7 +1,7 @@
 # backend/main.py
 from fastapi import FastAPI
 from database import engine, Base
-from routers import books, users, reviews, progress, favorites, clubs, club_members, categories, auth
+from routers import books, users, reviews, progress, favorites, clubs, club_members, categories, auth, books_google
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Book Club / Reading Tracker")
@@ -35,6 +35,7 @@ app.include_router(clubs.router)
 app.include_router(club_members.router)
 app.include_router(categories.router)
 app.include_router(auth.router)
+app.include_router(books_google.router)
 
 @app.get("/")
 def root():

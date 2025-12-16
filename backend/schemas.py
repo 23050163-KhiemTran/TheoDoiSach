@@ -141,3 +141,72 @@ class TokenData(BaseModel):
     sub: Optional[str] = None
 
     model_config = {"from_attributes": True}
+
+
+# ------------------- SÁCH GOOGLE -------------------
+class SachGoogleBase(BaseModel):
+    google_book_id: str
+    tieu_de: str
+    tac_gia: Optional[str] = None
+    tong_so_trang: Optional[int] = None
+    anh_bia: Optional[str] = None
+
+
+class SachGoogleCreate(SachGoogleBase):
+    pass
+
+
+class SachGoogleResponse(SachGoogleBase):
+    id: int
+    ngay_tao: datetime
+
+    model_config = {"from_attributes": True}
+
+# ------------------- TIẾN ĐỘ ĐỌC SÁCH GOOGLE -------------------
+class TienDoGoogleBase(BaseModel):
+    so_trang_da_doc: int = Field(..., ge=0)
+
+
+class TienDoGoogleCreate(TienDoGoogleBase):
+    google_book_id: str
+
+
+class TienDoGoogleResponse(TienDoGoogleBase):
+    id: int
+    id_sach_google: int
+    id_nguoi_dung: int
+    ngay_cap_nhat: datetime
+
+    model_config = {"from_attributes": True}
+
+# ------------------- YÊU THÍCH GOOGLE BOOK -------------------
+class YeuThichGoogleCreate(BaseModel):
+    google_book_id: str
+
+
+class YeuThichGoogleResponse(BaseModel):
+    id: int
+    id_sach_google: int
+    id_nguoi_dung: int
+    ngay_them: datetime
+
+    model_config = {"from_attributes": True}
+
+# ------------------- ĐÁNH GIÁ GOOGLE BOOK -------------------
+class DanhGiaGoogleBase(BaseModel):
+    diem: int = Field(..., ge=1, le=5)
+    binh_luan: Optional[str] = None
+
+
+class DanhGiaGoogleCreate(DanhGiaGoogleBase):
+    google_book_id: str
+
+
+class DanhGiaGoogleResponse(DanhGiaGoogleBase):
+    id: int
+    id_sach_google: int
+    id_nguoi_dung: int
+    ngay_tao: datetime
+    ten_dang_nhap: Optional[str] = None
+
+    model_config = {"from_attributes": True}

@@ -125,3 +125,105 @@ class ThanhVienCauLacBo(Base):
 
     cau_lac_bo = relationship("CauLacBoSach", back_populates="thanh_vien")
     nguoi_dung = relationship("NguoiDung", back_populates="clb_tham_gia")
+
+# --------------------- SÁCH GOOGLE ---------------------
+class SachGoogle(Base):
+    __tablename__ = "sach_google"
+
+    id = Column(Integer, primary_key=True, index=True)
+    google_book_id = Column(String(100), unique=True, nullable=False)
+
+    tieu_de = Column(String(200), nullable=False)
+    tac_gia = Column(String(200))
+    tong_so_trang = Column(Integer)
+    mo_ta = Column(Text)
+    anh_bia = Column(Text)
+
+    ngay_tao = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    # Quan hệ
+    danh_gias = relationship(
+        "DanhGiaGoogle",
+        back_populates="sach_google",
+        cascade="all, delete"
+    )
+
+    tien_do = relationship(
+        "TienDoGoogle",
+        back_populates="sach_google",
+        cascade="all, delete"
+    )
+
+    yeu_thich = relationship(
+        "YeuThichGoogle",
+        back_populates="sach_google",
+        cascade="all, delete"
+    )
+
+# --------------------- TIẾN ĐỘ GOOGLE BOOK ---------------------
+class TienDoGoogle(Base):
+    __tablename__ = "tien_do_google"
+
+    id = Column(Integer, primary_key=True, index=True)
+    id_sach_google = Column(
+        Integer,
+        ForeignKey("sach_google.id", ondelete="CASCADE")
+    )
+    id_nguoi_dung = Column(
+        Integer,
+        ForeignKey("nguoi_dung.id", ondelete="CASCADE")
+    )
+
+    so_trang_da_doc = Column(Integer, default=0)
+    ngay_cap_nhat = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    sach_google = relationship("SachGoogle", back_populates="tien_do")
+    nguoi_dung = relationship("NguoiDung")
+
+# --------------------- YÊU THÍCH GOOGLE BOOK ---------------------
+class YeuThichGoogle(Base):
+    __tablename__ = "yeu_thich_google"
+
+    id = Column(Integer, primary_key=True, index=True)
+    id_sach_google = Column(
+        Integer,
+        ForeignKey("sach_google.id", ondelete="CASCADE")
+    )
+    id_nguoi_dung = Column(
+        Integer,
+        ForeignKey("nguoi_dung.id", ondelete="CASCADE")
+    )
+
+    ngay_them = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    __table_args__ = (
+        UniqueConstraint(
+            "id_sach_google",
+            "id_nguoi_dung",
+            name="uix_google_sach_nguoi_dung"
+        ),
+    )
+
+    sach_google = relationship("SachGoogle", back_populates="yeu_thich")
+    nguoi_dung = relationship("NguoiDung")
+
+# --------------------- ĐÁNH GIÁ GOOGLE BOOK ---------------------
+class DanhGiaGoogle(Base):
+    __tablename__ = "danh_gia_google"
+
+    id = Column(Integer, primary_key=True, index=True)
+    id_sach_google = Column(
+        Integer,
+        ForeignKey("sach_google.id", ondelete="CASCADE")
+    )
+    id_nguoi_dung = Column(
+        Integer,
+        ForeignKey("nguoi_dung.id", ondelete="CASCADE")
+    )
+
+    diem = Column(Integer)
+    binh_luan = Column(Text)
+    ngay_tao = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    sach_google = relationship("SachGoogle", back_populates="danh_gias")
+    nguoi_dung = relationship("NguoiDung")

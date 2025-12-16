@@ -173,7 +173,13 @@
       import { API } from "./js/config.js";
 
       const THE_LOAI_URL = API + "/the_loai";
-      const token = localStorage.getItem("token"); // Admin token
+      const token = localStorage.getItem("token");
+
+      // -------------------- LOGOUT --------------------
+      window.logout = async function () {
+        localStorage.removeItem("token");
+        window.location.href = "login.html";
+      };
 
       // Tải danh sách thể loại
       async function loadCategories() {
@@ -270,12 +276,6 @@
       }
 
       loadCategories();
-
-      // -------------------- LOGOUT --------------------
-      function logout() {
-        localStorage.removeItem("token");
-        window.location.href = "login.html";
-      }
     </script>
   </body>
 </html>
