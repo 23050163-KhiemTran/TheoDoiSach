@@ -10,6 +10,7 @@ from models import (
     YeuThichGoogle
 )
 from schemas import (
+    SachGoogleResponse,
     SachResponse,
     TienDoDocSachCreate,
     TienDoDocSachResponse
@@ -146,21 +147,15 @@ def toggle_google_book_favorite(
 
     return {"favorite": True}
 
-@router.get("/all", response_model=List[SachResponse])
-def get_google_books(
-    q: Optional[str] = Query(None),
-    page: int = Query(1, ge=1)
-):
+@router.get("/all", response_model=List[SachGoogleResponse])
+def get_google_books(q: Optional[str] = Query(None), page: int = Query(1, ge=1)):
     limit = 8
     start_index = (page - 1) * limit
 
     if not q:
         q = "book"
 
-    url = (
-        "https://www.googleapis.com/books/v1/volumes"
-        f"?q={q}&startIndex={start_index}&maxResults={limit}&key={GOOGLE_API_KEY}"
-    )
+    url = f"https://www.googleapis.com/books/v1/volumes?q={q}&startIndex={start_index}&maxResults={limit}&key={GOOGLE_API_KEY}"
 
     try:
         resp = requests.get(url, timeout=5).json()
@@ -169,20 +164,18 @@ def get_google_books(
         return []
 
     books = []
-    for item in items:
+    for i, item in enumerate(items):
         info = item.get("volumeInfo", {})
         books.append(
-    SachResponse(
-        id=0,
-        tieu_de=info.get("title", "Không có tiêu đề"),
-        tac_gia=", ".join(info.get("authors", [])),
-        tong_so_trang=info.get("pageCount", 0),
-        mo_ta=info.get("description", ""),
-        id_the_loai=None,
-        anh_bia=info.get("imageLinks", {}).get("thumbnail"),
-        link_sach=item.get("id")
-    )
-)
+            SachGoogleResponse(
+                id=i+1,
+                tieu_de=info.get("title", "Không có tiêu đề"),
+                tac_gia=", ".join(info.get("authors", [])),
+                tong_so_trang=info.get("pageCount", 0),
+                mo_ta=info.get("description", ""),
+                anh_bia=info.get("imageLinks", {}).get("thumbnail"),
+                link_sach=item.get("id")
+            )
+        )
 
-
-    return books
+    return books 
