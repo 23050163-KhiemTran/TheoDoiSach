@@ -167,15 +167,16 @@ def get_google_books(q: Optional[str] = Query(None), page: int = Query(1, ge=1))
     for i, item in enumerate(items):
         info = item.get("volumeInfo", {})
         books.append(
-            SachGoogleResponse(
-                id=i+1,
-                tieu_de=info.get("title", "Không có tiêu đề"),
-                tac_gia=", ".join(info.get("authors", [])),
-                tong_so_trang=info.get("pageCount", 0),
-                mo_ta=info.get("description", ""),
-                anh_bia=info.get("imageLinks", {}).get("thumbnail"),
-                link_sach=item.get("id")
-            )
-        )
+    SachGoogleResponse(
+        id=i+1,
+        google_book_id=item.get("id"),
+        tieu_de=info.get("title", "Không có tiêu đề"),
+        tac_gia=", ".join(info.get("authors", [])),
+        tong_so_trang=info.get("pageCount", 0),
+        mo_ta=info.get("description", ""),
+        anh_bia=info.get("imageLinks", {}).get("thumbnail"),
+        link_sach=item.get("id")
+    )
+)
 
     return books 

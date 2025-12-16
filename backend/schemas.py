@@ -158,6 +158,7 @@ class SachGoogleCreate(SachGoogleBase):
 
 class SachGoogleResponse(SachGoogleBase):
     id: int
+    google_book_id: str
 
     model_config = {"from_attributes": True}
 
