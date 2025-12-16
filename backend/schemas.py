@@ -158,7 +158,6 @@ class SachGoogleCreate(SachGoogleBase):
 
 class SachGoogleResponse(SachGoogleBase):
     id: int
-    ngay_tao: datetime
 
     model_config = {"from_attributes": True}
 
