@@ -3,7 +3,7 @@
 **Nhóm thực hiện:** 23050163-KhiemTran, hokbtj (TrieuGia)
 
 **Mô tả ngắn:**
-TheoDoiSach là một hệ thống theo dõi sách (book-tracking) được phát triển làm tiểu luận môn Phát triển phần mềm mạng máy tính (PTMNM). Ứng dụng gồm backend (API) và frontend (giao diện web). Có trang demo được triển khai tại: [https://theo-doi-sach.vercel.app](https://theo-doi-sach.vercel.app)
+TheoDoiSach là một hệ thống theo dõi sách được phát triển làm tiểu luận môn Phát triển ứng dụng mã nguồn mở. Ứng dụng gồm backend (API) và frontend (giao diện web). Có trang demo được triển khai tại: [https://theo-doi-sach.vercel.app](https://theo-doi-sach.vercel.app)
 
 ---
 
@@ -230,26 +230,20 @@ THEODOISACH/
 │   └── admin_users.html         # Trang quản lý người dùng (admin)
 │
 └── README.md
----
-
+```
 ## Hướng dẫn đóng góp
 1. Fork repository
 2. Tạo branch mới: `git checkout -b feature/<tên-feature>`
 3. Commit và push changes
 4. Tạo Pull Request mô tả chi tiết thay đổi
 
----
-
 ## Ghi nhận
-- Nhóm thực hiện: 23050163-KhiemTran, hokbtj (TrieuGia), 23050149-pixel (Vũ Thanh Bình)
-- Môn: PTMNM (Tiểu luận)
+- Nhóm thực hiện: 23050163-KhiemTran, hokbtj (TrieuGia)
+- Môn: PHÁT TRIỂN ỨNG DỤNG MÃ NGUỒN MỠ
 
----
 
 ## License
 
 MIT License
 
-Copyright (c) 2025 Nhóm TheoDoiSach
-
----
+Copyright (c) 2025 Nhóm 19 TheoDoiSach
