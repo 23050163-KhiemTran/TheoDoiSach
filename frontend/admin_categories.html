@@ -236,15 +236,15 @@
         });
 
       // Mở modal sửa
-      function openEdit(id, name) {
+      window.openEdit = async function (id, name) {
         document.getElementById("editCategoryId").value = id;
         document.getElementById("editCategoryName").value = name;
 
         new bootstrap.Modal(document.getElementById("editModal")).show();
-      }
+      };
 
       // Lưu sửa
-      async function saveEdit() {
+      window.saveEdit = async function () {
         const id = document.getElementById("editCategoryId").value;
         const name = document.getElementById("editCategoryName").value;
 
@@ -261,10 +261,10 @@
         bootstrap.Modal.getInstance(
           document.getElementById("editModal")
         ).hide();
-      }
+      };
 
       // Xóa thể loại
-      async function deleteCategory(id) {
+      window.deleteCategory = async function (id) {
         if (!confirm("Bạn có chắc muốn xóa thể loại này?")) return;
 
         await fetch(THE_LOAI_URL + "/delete/" + id, {
@@ -273,7 +273,7 @@
         });
 
         loadCategories();
-      }
+      };
 
       loadCategories();
     </script>

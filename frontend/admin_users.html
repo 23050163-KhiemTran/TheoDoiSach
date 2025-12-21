@@ -182,7 +182,7 @@
       // ==========================
       // LẤY DANH SÁCH USER
       // ==========================
-      async function taiDanhSachUser() {
+      window.taiDanhSachUser = async function () {
         const token = localStorage.getItem("token");
 
         const res = await fetch(`${API_URL}/nguoi_dung/getAll`, {
@@ -225,12 +225,12 @@
             </tr>
         `;
         });
-      }
+      };
 
       // ==========================
       // MỞ MODAL SỬA USER
       // ==========================
-      async function moModalSua(id) {
+      window.moModalSua = async function (id) {
         const token = localStorage.getItem("token");
 
         const res = await fetch(`${API_URL}/nguoi_dung/getId/${id}`, {
@@ -250,12 +250,12 @@
         document.getElementById("edit_role").value = user.vai_tro || "user";
 
         new bootstrap.Modal(document.getElementById("editUserModal")).show();
-      }
+      };
 
       // ==========================
       // CẬP NHẬT USER
       // ==========================
-      async function capNhatUser() {
+      window.capNhatUser = async function () {
         const token = localStorage.getItem("token");
         const id = document.getElementById("edit_id").value;
 
@@ -282,12 +282,12 @@
           document.getElementById("editUserModal")
         ).hide();
         taiDanhSachUser();
-      }
+      };
 
       // ==========================
       // XÓA USER
       // ==========================
-      async function xoaUser(id) {
+      window.xoaUser = async function (id) {
         if (!confirm("Bạn chắc muốn xóa user này?")) return;
 
         const token = localStorage.getItem("token");
@@ -306,7 +306,7 @@
 
         alert("Xóa thành công!");
         taiDanhSachUser();
-      }
+      };
     </script>
   </body>
 </html>
